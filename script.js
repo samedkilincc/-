@@ -1,0 +1,187 @@
+// =======================================================
+// SABİT DEĞİŞKENLER VE AYARLAR
+// =======================================================
+
+let startDate = new Date("2025-11-12"); 
+const DOGRU_SIFRE = "12112025";
+const YAZI_HIZI = 40; 
+
+// Düzeltilmiş Resim Yolları
+let photos = [
+    "images/WhatsApp Görsel 2025-11-17 saat 23.30.49_e611421e.jpg",
+    "images/WhatsApp Görsel 2025-11-12 saat 21.16.41_d90d8e5e.jpg",
+    "images/WhatsApp Görsel 2025-11-24 saat 00.06.21_82137cff.jpg",
+    "images/WhatsApp Görsel 2025-11-17 saat 23.30.55_45c99fa5.jpg"
+];
+
+// SADECE 'Seni Seviyorum' temalı mesajlar
+const askMesajlari = [
+    "Seni Seviyorum ❤️",
+    "Çok Seviyorum! ✨",
+    "Sana Aşkım Sonsuz ♾️",
+    "Seni her şeyden çok seviyorum.",
+    "Dünyamın en güzelisin! 💖",
+    "I Love You! 🥰",
+    "Seninle Tamamlandım.",
+    "Kalbimin Sahibi! 💘"
+];
+
+// ELLE BÖLÜNMÜŞ MESAJ PARÇALARI
+let bolunmusMesajlar = [
+    "Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın, belki de bu düşüncemi özgün bulmayıp beğenmeden sıkılıp bu ne böyle diyeceğin bir şeyle karşındayım.",
+
+    "Belki bu fikir özgün değil kabul ediyorum ama şunu bilmeni istiyorum ki yazacağım bu yazıyı tamamen benliğimle yazıyorum. Evet bir şair değilim yazar değilim ki burada edebi güzellemeler yapıp hoşuna gidecek cümleleri yazayım.",
+
+    "Ama ben Samed’im. Sana karşı içimde taşıdığım duyguları ifade edebilirim. Hayatıma girdiğinden beri o kadar enerji dolu, o kadar huzur dolu zamanlarım oldu ki halen de öyle. İnsan gerçekten sevmeli gerçekten de sevilmeliymiş. İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor.",
+
+    "Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. Her zaman, her anında yanında olmak istiyorum. Birlikte aşarız insanı olalım. İyi ki varsın, iyi ki benim sevgilimsin.❤️"
+];
+
+
+let akisIndex = 0;
+const kapsayici = document.getElementById('ozelIcerikKapsayici');
+
+
+// =======================================================
+// GİRİŞ KONTROLÜ VE EĞLENCE FONKSİYONLARI
+// =======================================================
+
+// Enter tuşuna basıldığında check() fonksiyonunu çağırır
+function enterTusuDinleyicisi() {
+    const sifreInput = document.getElementById('password');
+    sifreInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') { 
+            event.preventDefault(); 
+            check(); 
+        }
+    });
+}
+
+
+function guncelSaatiGoster() {
+    const tarih = new Date();
+    
+    const saat = tarih.toLocaleTimeString('tr-TR', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+    });
+    
+    const gun = tarih.toLocaleDateString('tr-TR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+
+    const gosterge = document.getElementById('saatGostergeci');
+    if (gosterge) {
+        gosterge.innerText = `${gun} | ${saat}`;
+    }
+}
+
+function saatiBaslat() {
+    guncelSaatiGoster(); 
+    setInterval(guncelSaatiGoster, 1000); 
+}
+
+// RASTGELE MESAJ GÖSTERME (Aşk Bulutları)
+function rastgeleMesajGoster() {
+    const mesajAlani = document.getElementById('askBulutu');
+    
+    const rastgeleIndex = Math.floor(Math.random() * askMesajlari.length);
+    mesajAlani.innerText = askMesajlari[rastgeleIndex];
+    
+    mesajAlani.style.display = 'block';
+
+    setInterval(() => {
+        const yeniIndex = Math.floor(Math.random() * askMesajlari.length);
+        mesajAlani.innerText = askMesajlari[yeniIndex];
+    }, 10000); 
+}
+
+function gosterIcerikAkisli() {
+    if (akisIndex < bolunmusMesajlar.length) {
+        
+        const metinKutusu = document.createElement('div');
+        metinKutusu.classList.add('hikaye-metni');
+        kapsayici.appendChild(metinKutusu);
+        
+        yazdirHarfHarf(metinKutusu, bolunmusMesajlar[akisIndex], function() {
+            
+            if (akisIndex < photos.length) { 
+                const resimElementi = document.createElement('img');
+                resimElementi.src = photos[akisIndex];
+                resimElementi.classList.add('hikaye-resmi');
+                kapsayici.appendChild(resimElementi);
+            }
+            
+            akisIndex++;
+            setTimeout(gosterIcerikAkisli, 1500); 
+        });
+
+    } 
+}
+
+function yazdirHarfHarf(element, metin, callback) {
+    let harfIndex = 0;
+    function yazdir() {
+        if (harfIndex < metin.length) {
+            element.innerHTML += metin.charAt(harfIndex);
+            harfIndex++;
+            setTimeout(yazdir, YAZI_HIZI);
+        } else {
+            if (callback) callback();
+        }
+    }
+    yazdir();
+}
+
+function startHeartRain() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "💗";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+        document.getElementById("hearts").appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }, 300);
+}
+
+function updateCounter() {
+    let today = new Date();
+    let diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)); 
+    document.getElementById("counter").innerHTML =
+        `Bugün birlikteliğimizin <b>${diff}.</b> günü 💞`;
+}
+
+
+// =======================================================
+// ANA KONTROL FONKSİYONU (Şifre Giriş)
+// =======================================================
+
+function check() {
+    let pass = document.getElementById("password").value;
+
+    if(pass === DOGRU_SIFRE) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("content").classList.remove("hidden");
+
+        // Tüm Özellikleri Başlat
+        document.getElementById("music").play();
+        updateCounter();
+        startHeartRain();
+        rastgeleMesajGoster();
+        gosterIcerikAkisli();
+        
+    } else {
+        document.getElementById("wrong").innerText = "Yanlış şifre!";
+    }
+}
+
+// =======================================================
+// SAYFA BAŞLANGICINDA ÇALIŞACAK KODLAR
+// =======================================================
+
+saatiBaslat();
+enterTusuDinleyicisi();
