@@ -2,9 +2,11 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
+// Bu tarihi, sizin başlangıç tarihinizle değiştirmeyi unutmayın! (Örn: "2024-01-01")
 let startDate = new Date("2025-11-12"); 
 const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
+const MUZIK_DOSYA_ADI = "Neyleyim.mp3"; 
 
 // Düzeltilmiş Resim Yolları
 let photos = [
@@ -29,11 +31,8 @@ const askMesajlari = [
 // ELLE BÖLÜNMÜŞ MESAJ PARÇALARI
 let bolunmusMesajlar = [
     "Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın, belki de bu düşüncemi özgün bulmayıp beğenmeden sıkılıp bu ne böyle diyeceğin bir şeyle karşındayım.",
-
     "Belki bu fikir özgün değil kabul ediyorum ama şunu bilmeni istiyorum ki yazacağım bu yazıyı tamamen benliğimle yazıyorum. Evet bir şair değilim yazar değilim ki burada edebi güzellemeler yapıp hoşuna gidecek cümleleri yazayım.",
-
     "Ama ben Samed’im. Sana karşı içimde taşıdığım duyguları ifade edebilirim. Hayatıma girdiğinden beri o kadar enerji dolu, o kadar huzur dolu zamanlarım oldu ki halen de öyle. İnsan gerçekten sevmeli gerçekten de sevilmeliymiş. İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor.",
-
     "Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. Her zaman, her anında yanında olmak istiyorum. Birlikte aşarız insanı olalım. İyi ki varsın, iyi ki benim sevgilimsin.❤️"
 ];
 
@@ -43,10 +42,50 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
 // =======================================================
-// GİRİŞ KONTROLÜ VE EĞLENCE FONKSİYONLARI
+// YENİ FONKSİYON: DETAYLI İLİŞKİ SAYACI (Yıl, Ay, Gün, Saat, Dakika, Saniye)
 // =======================================================
 
-// Enter tuşuna basıldığında check() fonksiyonunu çağırır
+function updateDetailedCounter() {
+    const start = startDate.getTime();
+    const now = new Date().getTime();
+    let difference = now - start;
+
+    // Milisaniyeyi saniyeye çevir
+    const totalSeconds = Math.floor(difference / 1000);
+    
+    // Kalan saniye, dakika ve saat
+    const saniye = totalSeconds % 60;
+    const dakika = Math.floor(totalSeconds / 60) % 60;
+    const saat = Math.floor(totalSeconds / 3600) % 24;
+    
+    // Toplam Gün
+    const gun = Math.floor(totalSeconds / (3600 * 24));
+    
+    // Yıl ve Ay hesaplaması (yaklaşık değerler, artık yılları ve ay uzunluklarını ortalamaya alır)
+    const yil = Math.floor(gun / 365.25); 
+    const kalanGun = gun - Math.floor(yil * 365.25);
+    const ay = Math.floor(kalanGun / 30.44); 
+    const kalanGunFinal = Math.floor(kalanGun % 30.44);
+
+    // Tek haneli sayıları iki haneye tamamla
+    const pad = (n) => (n < 10) ? '0' + n : n;
+
+    const output = `
+        ${yil} Yıl, ${ay} Ay, ${kalanGunFinal} Gün, <br>
+        ${pad(saat)} Saat, ${pad(dakika)} Dakika, ${pad(saniye)} Saniye
+    `;
+
+    // Sonucu HTML'ye yazdır
+    document.getElementById("counter").innerHTML = `
+        Bugün birlikteliğimizin tam: <b><br>${output}</b> 💞
+    `;
+}
+
+
+// =======================================================
+// DİĞER FONKSİYONLAR
+// =======================================================
+
 function enterTusuDinleyicisi() {
     const sifreInput = document.getElementById('password');
     sifreInput.addEventListener('keydown', function(event) {
@@ -56,7 +95,6 @@ function enterTusuDinleyicisi() {
         }
     });
 }
-
 
 function guncelSaatiGoster() {
     const tarih = new Date();
@@ -84,7 +122,6 @@ function saatiBaslat() {
     setInterval(guncelSaatiGoster, 1000); 
 }
 
-// RASTGELE MESAJ GÖSTERME (Aşk Bulutları)
 function rastgeleMesajGoster() {
     const mesajAlani = document.getElementById('askBulutu');
     
@@ -148,13 +185,6 @@ function startHeartRain() {
     }, 300);
 }
 
-function updateCounter() {
-    let today = new Date();
-    let diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)); 
-    document.getElementById("counter").innerHTML =
-        `Bugün birlikteliğimizin <b>${diff}.</b> günü 💞`;
-}
-
 
 // =======================================================
 // ANA KONTROL FONKSİYONU (Şifre Giriş)
@@ -169,7 +199,11 @@ function check() {
 
         // Tüm Özellikleri Başlat
         document.getElementById("music").play();
-        updateCounter();
+        
+        // YENİ: Detaylı sayacı başlat
+        updateDetailedCounter();
+        setInterval(updateDetailedCounter, 1000); 
+        
         startHeartRain();
         rastgeleMesajGoster();
         gosterIcerikAkisli();
