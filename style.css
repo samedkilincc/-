@@ -1,39 +1,42 @@
 body {
-    background: linear-gradient(135deg, #ff9ec7, #ffd0e7); 
+    background: none; /* Arka planı tamamen sıfırladık */
     font-family: 'Times New Roman', serif; 
     text-align: center;
     padding: 40px;
     overflow-x: hidden;
-    background: none; 
 }
 
-/* Bulanık Fotoğraf Stili (Arka planda fotoğraf kullanıyorsanız) */
+/* Bulanık Arka Plan Katmanı (Fotoğraf veya Tema Renkleri buraya gelir) */
 #arkaPlanKatmani {
     position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* background-image: url('images/arka_plan.jpg'); */ 
+    /* background-image: url('images/arka_plan.jpg'); */ /* Fotoğraf kullanmak isterseniz bu satırı açın */
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
-    filter: brightness(0.6) blur(3px); 
+    filter: brightness(0.9); /* Arka planı hafifçe kararttık */
     z-index: -1;
+    
+    /* Varsayılan Tema (Güneşli, API çalışmazsa bu görünür) */
+    background: linear-gradient(135deg, #ff9ec7, #ffd0e7); 
 }
 
 /* Hava Durumu Temaları */
+/* Not: Tema renkleri arka plan katmanına uygulanır */
 .hava-güneşli {
-    background: linear-gradient(135deg, #ff9ec7, #ffd0e7); 
+    background: linear-gradient(135deg, #ff9ec7, #ffd0e7) !important; 
 }
 .hava-bulutlu {
-    background: linear-gradient(135deg, #a4b0be, #d2dae2); 
+    background: linear-gradient(135deg, #a4b0be, #d2dae2) !important; 
 }
 .hava-yağmurlu {
-    background: linear-gradient(135deg, #486a98, #829cbc); 
+    background: linear-gradient(135deg, #486a98, #829cbc) !important; 
 }
 .hava-karlı {
-    background: linear-gradient(135deg, #c7d8e6, #f7f9fb); 
+    background: linear-gradient(135deg, #c7d8e6, #f7f9fb) !important; 
 }
 
 /* Şifre Giriş Ekranı Başlık Stili */
@@ -55,7 +58,7 @@ body {
     100% { transform: scale(1); }
 }
 
-/* Şifre Kutusu ve Input Stilleri */
+/* Şifre Kutusu ve Input Stilleri (Diğer stiller aynı kalır) */
 .box {
     background: white;
     width: 300px;

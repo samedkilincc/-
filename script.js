@@ -5,12 +5,13 @@
 // LÜTFEN BAŞLANGIÇ TARİHİNİ KONTROL EDİN
 let startDate = new Date("2025-11-12"); 
 
-// API Anahtarınız ve Şehir Adı
+// API Anahtarınız ve Şehir Adı (Lütfen doğru olduğundan emin olun)
 const OPENWEATHER_API_KEY = "4bba39abc1a54bc8504cae5957a8b2c4"; 
 const SEHIR_ADI = "Kastamonu"; 
 
-const DOGRU_SIFRE = "27012004";
+const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
+const MUZIK_DOSYA_ADI = "Neyleyim.mp3"; 
 
 // Resim Yolları (images/ klasöründeki dosya adlarıyla eşleşmeli)
 let photos = [
@@ -45,24 +46,26 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 // =======================================================
 
 function temayiGuncelle(havaDurumuKodu) {
-    const body = document.body;
-    body.classList.remove('hava-güneşli', 'hava-bulutlu', 'hava-yağmurlu', 'hava-karlı'); 
+    // API'dan gelen veriye göre arka plan katmanına sınıf atar
+    const arkaPlanKatmani = document.getElementById('arkaPlanKatmani');
+    
+    // Eski sınıfları temizle
+    arkaPlanKatmani.classList.remove('hava-güneşli', 'hava-bulutlu', 'hava-yağmurlu', 'hava-karlı'); 
     
     // Tema atama
     if (havaDurumuKodu >= 200 && havaDurumuKodu <= 599) {
-        body.classList.add('hava-yağmurlu');
+        arkaPlanKatmani.classList.add('hava-yağmurlu');
     } else if (havaDurumuKodu >= 600 && havaDurumuKodu <= 699) {
-        body.classList.add('hava-karlı');
+        arkaPlanKatmani.classList.add('hava-karlı');
     } else if (havaDurumuKodu >= 700 && havaDurumuKodu <= 800) {
-        body.classList.add('hava-güneşli');
+        arkaPlanKatmani.classList.add('hava-güneşli');
     } else if (havaDurumuKodu > 800) {
-        body.classList.add('hava-bulutlu');
+        arkaPlanKatmani.classList.add('hava-bulutlu');
     }
     
     // Saatin yanına şehir bilgisini ekler
     const gosterge = document.getElementById('saatGostergeci');
     if (gosterge) {
-        // Eğer zaten tarih varsa, şehir adını ekle (temiz kod)
         gosterge.innerText += ` | ${SEHIR_ADI}`;
     }
 }
@@ -102,7 +105,6 @@ function saatiBaslat() {
     guncelSaatiGoster(); 
     setInterval(guncelSaatiGoster, 1000); 
 }
-
 
 function updateDetailedCounter() {
     const start = startDate.getTime();
@@ -210,9 +212,11 @@ function check() {
     if(pass === DOGRU_SIFRE) {
         document.getElementById("login").style.display = "none";
         document.getElementById("content").classList.remove("hidden");
-
-        // Tüm Özellikleri Başlat
+        
+        // Müzik çalmaya başlar
         document.getElementById("music").play();
+        
+        // Tüm Özellikleri Başlat
         updateDetailedCounter();
         setInterval(updateDetailedCounter, 1000); 
         startHeartRain();
@@ -230,4 +234,4 @@ function check() {
 
 saatiBaslat();
 enterTusuDinleyicisi(); 
-havaDurumuCek();
+// Hava durumu çekme işlemi şifre doğru girildikten sonra çalışacak
