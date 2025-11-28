@@ -2,7 +2,10 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
-// Bu tarihi, sizin başlangıç tarihinizle değiştirmeyi unutmayın! (Örn: "2024-01-01")
+// BURAYA KENDİ ALDIĞINIZ API ANAHTARINIZ GİRİLDİ
+const OPENWEATHER_API_KEY = "4bba39abc1a54bc8504cae5957a8b2c4"; 
+const SEHIR_ADI = "Kastamonu"; 
+
 let startDate = new Date("2025-11-12"); 
 const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
@@ -31,8 +34,11 @@ const askMesajlari = [
 // ELLE BÖLÜNMÜŞ MESAJ PARÇALARI
 let bolunmusMesajlar = [
     "Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın, belki de bu düşüncemi özgün bulmayıp beğenmeden sıkılıp bu ne böyle diyeceğin bir şeyle karşındayım.",
+
     "Belki bu fikir özgün değil kabul ediyorum ama şunu bilmeni istiyorum ki yazacağım bu yazıyı tamamen benliğimle yazıyorum. Evet bir şair değilim yazar değilim ki burada edebi güzellemeler yapıp hoşuna gidecek cümleleri yazayım.",
+
     "Ama ben Samed’im. Sana karşı içimde taşıdığım duyguları ifade edebilirim. Hayatıma girdiğinden beri o kadar enerji dolu, o kadar huzur dolu zamanlarım oldu ki halen de öyle. İnsan gerçekten sevmeli gerçekten de sevilmeliymiş. İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor.",
+
     "Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. Her zaman, her anında yanında olmak istiyorum. Birlikte aşarız insanı olalım. İyi ki varsın, iyi ki benim sevgilimsin.❤️"
 ];
 
@@ -42,79 +48,64 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
 // =======================================================
-// YENİ FONKSİYON: DETAYLI İLİŞKİ SAYACI (Yıl, Ay, Gün, Saat, Dakika, Saniye)
+// YENİ ÖZELLİK: HAVA DURUMUNA GÖRE TEMA FONKSİYONLARI
 // =======================================================
 
-function updateDetailedCounter() {
-    const start = startDate.getTime();
-    const now = new Date().getTime();
-    let difference = now - start;
-
-    // Milisaniyeyi saniyeye çevir
-    const totalSeconds = Math.floor(difference / 1000);
+function temayiGuncelle(havaDurumuKodu) {
+    const body = document.body;
+    body.classList.remove('hava-güneşli', 'hava-bulutlu', 'hava-yağmurlu', 'hava-karlı'); 
     
-    // Kalan saniye, dakika ve saat
-    const saniye = totalSeconds % 60;
-    const dakika = Math.floor(totalSeconds / 60) % 60;
-    const saat = Math.floor(totalSeconds / 3600) % 24;
+    // Açık hava durumuna göre basitçe tema atama
+    if (havaDurumuKodu >= 200 && havaDurumuKodu <= 599) {
+        body.classList.add('hava-yağmurlu');
+    } else if (havaDurumuKodu >= 600 && havaDurumuKodu <= 699) {
+        body.classList.add('hava-karlı');
+    } else if (havaDurumuKodu >= 700 && havaDurumuKodu <= 800) {
+        body.classList.add('hava-güneşli');
+    } else if (havaDurumuKodu > 800) {
+        body.classList.add('hava-bulutlu');
+    }
     
-    // Toplam Gün
-    const gun = Math.floor(totalSeconds / (3600 * 24));
-    
-    // Yıl ve Ay hesaplaması (yaklaşık değerler, artık yılları ve ay uzunluklarını ortalamaya alır)
-    const yil = Math.floor(gun / 365.25); 
-    const kalanGun = gun - Math.floor(yil * 365.25);
-    const ay = Math.floor(kalanGun / 30.44); 
-    const kalanGunFinal = Math.floor(kalanGun % 30.44);
+    // Saatin yanına hava durumu bilgisini ekleyelim (Opsiyonel)
+    const gosterge = document.getElementById('saatGostergeci');
+    if (gosterge) {
+        gosterge.innerText += ` | ${SEHIR_ADI}`;
+    }
+}
 
-    // Tek haneli sayıları iki haneye tamamla
-    const pad = (n) => (n < 10) ? '0' + n : n;
 
-    const output = `
-        ${yil} Yıl, ${ay} Ay, ${kalanGunFinal} Gün, <br>
-        ${pad(saat)} Saat, ${pad(dakika)} Dakika, ${pad(saniye)} Saniye
-    `;
+function havaDurumuCek() {
+    if (!OPENWEATHER_API_KEY) {
+        console.error("Lütfen OpenWeatherMap API anahtarınızı girin!");
+        return;
+    }
 
-    // Sonucu HTML'ye yazdır
-    document.getElementById("counter").innerHTML = `
-        Bugün birlikteliğimizin tam: <b><br>${output}</b> 💞
-    `;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${SEHIR_ADI}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=tr`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.weather && data.weather.length > 0) {
+                const havaDurumuKodu = data.weather[0].id;
+                temayiGuncelle(havaDurumuKodu);
+            }
+        })
+        .catch(error => {
+            console.error("Hava durumu verisi çekilemedi:", error);
+        });
 }
 
 
 // =======================================================
-// DİĞER FONKSİYONLAR
+// GİRİŞ KONTROLÜ VE EĞLENCE FONKSİYONLARI (Kısaltıldı)
 // =======================================================
 
 function enterTusuDinleyicisi() {
-    const sifreInput = document.getElementById('password');
-    sifreInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') { 
-            event.preventDefault(); 
-            check(); 
-        }
-    });
+    // ... (Aynı kalır)
 }
 
 function guncelSaatiGoster() {
-    const tarih = new Date();
-    
-    const saat = tarih.toLocaleTimeString('tr-TR', { 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit' 
-    });
-    
-    const gun = tarih.toLocaleDateString('tr-TR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-
-    const gosterge = document.getElementById('saatGostergeci');
-    if (gosterge) {
-        gosterge.innerText = `${gun} | ${saat}`;
-    }
+    // ... (Aynı kalır)
 }
 
 function saatiBaslat() {
@@ -123,72 +114,24 @@ function saatiBaslat() {
 }
 
 function rastgeleMesajGoster() {
-    const mesajAlani = document.getElementById('askBulutu');
-    
-    const rastgeleIndex = Math.floor(Math.random() * askMesajlari.length);
-    mesajAlani.innerText = askMesajlari[rastgeleIndex];
-    
-    mesajAlani.style.display = 'block';
-
-    setInterval(() => {
-        const yeniIndex = Math.floor(Math.random() * askMesajlari.length);
-        mesajAlani.innerText = askMesajlari[yeniIndex];
-    }, 10000); 
+    // ... (Aynı kalır)
 }
 
 function gosterIcerikAkisli() {
-    if (akisIndex < bolunmusMesajlar.length) {
-        
-        const metinKutusu = document.createElement('div');
-        metinKutusu.classList.add('hikaye-metni');
-        kapsayici.appendChild(metinKutusu);
-        
-        yazdirHarfHarf(metinKutusu, bolunmusMesajlar[akisIndex], function() {
-            
-            if (akisIndex < photos.length) { 
-                const resimElementi = document.createElement('img');
-                resimElementi.src = photos[akisIndex];
-                resimElementi.classList.add('hikaye-resmi');
-                kapsayici.appendChild(resimElementi);
-            }
-            
-            akisIndex++;
-            setTimeout(gosterIcerikAkisli, 1500); 
-        });
-
-    } 
+    // ... (Aynı kalır)
 }
 
 function yazdirHarfHarf(element, metin, callback) {
-    let harfIndex = 0;
-    function yazdir() {
-        if (harfIndex < metin.length) {
-            element.innerHTML += metin.charAt(harfIndex);
-            harfIndex++;
-            setTimeout(yazdir, YAZI_HIZI);
-        } else {
-            if (callback) callback();
-        }
-    }
-    yazdir();
+    // ... (Aynı kalır)
 }
 
 function startHeartRain() {
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerText = "💗";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
-        document.getElementById("hearts").appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-    }, 300);
+    // ... (Aynı kalır)
 }
 
-
-// =======================================================
-// ANA KONTROL FONKSİYONU (Şifre Giriş)
-// =======================================================
+function updateDetailedCounter() {
+    // ... (Aynı kalır)
+}
 
 function check() {
     let pass = document.getElementById("password").value;
@@ -199,11 +142,8 @@ function check() {
 
         // Tüm Özellikleri Başlat
         document.getElementById("music").play();
-        
-        // YENİ: Detaylı sayacı başlat
         updateDetailedCounter();
         setInterval(updateDetailedCounter, 1000); 
-        
         startHeartRain();
         rastgeleMesajGoster();
         gosterIcerikAkisli();
@@ -218,4 +158,5 @@ function check() {
 // =======================================================
 
 saatiBaslat();
-enterTusuDinleyicisi();
+enterTusuDinleyicisi(); 
+havaDurumuCek(); // YENİ: Hava durumunu çek ve temayı ayarla!
