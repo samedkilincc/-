@@ -5,7 +5,7 @@
 // İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ DÜZELTİLDİ
 let startDate = new Date("2025-11-12 15:30:00"); 
 
-const DOGRU_SIFRE = "12112025";
+const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
 
 // WEATHERAPI AYARLARI (Metin mesajı için)
