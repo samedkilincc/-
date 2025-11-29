@@ -23,6 +23,8 @@ body {
     background: linear-gradient(135deg, #ff9ec7, #ffd0e7); 
 }
 
+/* Diğer tema sınıfları kaldırıldı. */
+
 /* Şifre Giriş Ekranı Başlık Stili */
 .ozel-baslik {
     font-family: 'Times New Roman', serif;
@@ -109,7 +111,7 @@ button:hover {
     overflow: hidden; 
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    height: 350px; /* Sabit Yükseklik */
+    height: 350px; 
 }
 
 .slayt-materyal {
@@ -146,4 +148,4 @@ button:hover {
         transform: translateY(100vh);
         opacity: 0;
     }
-}
+}   

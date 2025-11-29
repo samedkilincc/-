@@ -2,10 +2,13 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
+// İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ: 12 Kasım 2025, 15:30:00
 let startDate = new Date("2025-11-12 15:30:00"); 
 
-const DOGRU_SIFRE = "12112025";
+const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
+
+// WEATHERAPI AYARLARI
 const WEATHERAPI_KEY = "61f5c664edc0463abc591104252911"; 
 const SEHIR_ADI = "Kastamonu"; 
 
@@ -37,21 +40,142 @@ const gezdigimizYerlerMateryalleri = [
 // DİĞER SABİT MESAJLAR
 const askMesajlari = ["Seni Seviyorum ❤️", "Çok Seviyorum! ✨", "Sana Aşkım Sonsuz ♾️", "Seni her şeyden çok seviyorum.", "Dünyamın en güzelisin! 💖", "I Love You! 🥰", "Seninle Tamamlandım.", "Kalbimin Sahibi! 💘"];
 
-let akisIndex = 0;
 let currentSlaytIndex = 0; 
 let slaytInterval;
 const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
 // =======================================================
-// AKIŞ YÖNETİMİ VE TEMEL FONKSİYONLAR
+// HAVA DURUMU MESAJI VE DİĞER FONKSİYONLAR
 // =======================================================
 
+function havaDurumuMesajiGoster() {
+    // API Anahtarı, hatalı kodlamadan kurtarıldı.
+    const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${SEHIR_ADI}&lang=tr`;
+    const mesajKapsayici = document.getElementById('havaDurumuMesaji');
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.current && data.current.condition) {
+                const durum = data.current.condition.text.toLowerCase();
+                let mesaj = "";
+
+                if (durum.includes("yağmur") || durum.includes("sağanak") || durum.includes("çise") || durum.includes("dolu")) {
+                    mesaj = `☔ Bugün ${SEHIR_ADI}'da hava **yağmurlu**. Dışarı çıkarken yanına şemsiyeni ve içimi ısıtan gülümsemeni almayı unutma!`;
+                } else if (durum.includes("kar") || durum.includes("sulu kar")) {
+                    mesaj = `❄️ ${SEHIR_ADI}'ya **kar** yağıyor! Birlikteliğimizin en sıcak günü. Kombinini ona göre yap, soğuk almasın.`;
+                } else if (durum.includes("sis") || durum.includes("duman") || durum.includes("pus")) {
+                    mesaj = `🌫️ ${SEHIR_ADI}'da hava **sisli**. Unutma, nerede olursan ol, kalbimdeki yolun her zaman açık!`;
+                } else if (durum.includes("güneşli") || durum.includes("açık") || durum.includes("güneş")) {
+                    mesaj = `☀️ Bugün ${SEHIR_ADI}'da hava pırıl pırıl **güneşli**. Tıpkı aşkımızın geleceği gibi!`;
+                } else if (durum.includes("bulutlu") || durum.includes("kapalı")) {
+                    mesaj = `☁️ ${SEHIR_ADI}'da hava biraz **bulutlu** ama unutma, sen benim güneşimsin!`;
+                } else {
+                     mesaj = `🌍 Bugün ${SEHIR_ADI}'daki hava durumu: **${durum}**. Günümüz hep özel!`;
+                }
+
+                mesajKapsayici.innerHTML = `<p style="font-weight: bold; margin-bottom: 10px; color: #ff3c9d;"> Hava Durumu Bilgisi:</p>${mesaj}`;
+                mesajKapsayici.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error("Hava durumu mesajı çekilemedi:", error);
+        });
+}
+
+function guncelSaatiGoster() {
+    const tarih = new Date();
+    const saat = tarih.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const gun = tarih.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    const gosterge = document.getElementById('saatGostergeci');
+    if (gosterge) {
+        gosterge.innerText = `${gun} | ${saat}`;
+    }
+}
+
+function saatiBaslat() {
+    guncelSaatiGoster(); 
+    setInterval(guncelSaatiGoster, 1000); 
+}
+
+function updateDetailedCounter() {
+    const start = startDate.getTime();
+    const now = new Date().getTime();
+    let difference = now - start;
+
+    const totalSeconds = Math.floor(difference / 1000);
+    
+    const saniye = totalSeconds % 60;
+    const dakika = Math.floor(totalSeconds / 60) % 60;
+    const saat = Math.floor(totalSeconds / 3600) % 24;
+    
+    const gun = Math.floor(totalSeconds / (3600 * 24));
+    
+    const yil = Math.floor(gun / 365.25); 
+    const kalanGun = gun - Math.floor(yil * 365.25);
+    const ay = Math.floor(kalanGun / 30.44); 
+    const kalanGunFinal = Math.floor(kalanGun % 30.44);
+
+    const pad = (n) => (n < 10) ? '0' + n : n;
+
+    const output = `
+        ${yil} Yıl, ${ay} Ay, ${kalanGunFinal} Gün, <br>
+        ${pad(saat)} Saat, ${pad(dakika)} Dakika, ${pad(saniye)} Saniye
+    `;
+
+    document.getElementById('counter').innerHTML = `
+        Bugün birlikteliğimizin tam: <b><br>${output}</b> 💞
+    `;
+}
+
+function enterTusuDinleyicisi() {
+    const sifreInput = document.getElementById('password');
+    sifreInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') { 
+            event.preventDefault(); 
+            check(); 
+        }
+    });
+}
+
+function rastgeleMesajGoster() {
+    const mesajAlani = document.getElementById('askBulutu');
+    const rastgeleIndex = Math.floor(Math.random() * askMesajlari.length);
+    mesajAlani.innerText = askMesajlari[rastgeleIndex];
+    mesajAlani.style.display = 'block';
+    setInterval(() => {
+        const yeniIndex = Math.floor(Math.random() * askMesajlari.length);
+        mesajAlani.innerText = askMesajlari[yeniIndex];
+    }, 10000); 
+}
+
+
+// =======================================================
+// AKIŞ YÖNETİMİ VE SLAYT FONKSİYONLARI
+// =======================================================
+
+function yazdirHarfHarf(element, metin, callback) {
+    let harfIndex = 0;
+    function yazdir() {
+        if (harfIndex < metin.length) {
+            element.innerHTML += metin.charAt(harfIndex);
+            harfIndex++;
+            setTimeout(yazdir, YAZI_HIZI);
+        } else {
+            if (callback) callback();
+        }
+    }
+    yazdir();
+}
+
+// 1. ADIM: Tüm Metin ve Resim Akışını Başlatır
 function gosterAkisiSirala() {
-    // 1. Ana Yazı-Resim Akışını Başlat
     gosterMetinVeResimAkisi(0); 
 }
 
+// 2. ADIM: Ana 4 Metin ve Resim Akışı
 function gosterMetinVeResimAkisi(metinIndex) {
     if (metinIndex < bolunmusMesajlar.length) {
         
@@ -75,11 +199,12 @@ function gosterMetinVeResimAkisi(metinIndex) {
 
         });
     } else {
-        // 2. Ana Akış bitti, Sabit Başlık ve Fotoğraflara geç
+        // 3. ADIM: Ana Akış bitti, Sabit Başlık ve Fotoğraflara geç
         gosterSabitIcerikler();
     }
 }
 
+// 3. ADIM: Çilekhan ve Kasımpatı Bölümlerini Ekle
 function gosterSabitIcerikler() {
     // Çilekhan Başlığı ve Fotoğrafı
     const cilekhanBaslik = document.createElement('h3');
@@ -111,7 +236,7 @@ function gosterSabitIcerikler() {
     kasimpatiResim.style.maxWidth = '400px';
     kapsayici.appendChild(kasimpatiResim);
 
-    // 3. Slayt Gösterisine Geç
+    // 4. ADIM: En Sona Slayt Bölümünü Ekle
     setTimeout(gosterSlaytBolumu, 1500); 
 }
 
@@ -134,11 +259,7 @@ function gosterSlaytBolumu() {
     initializeGezdigimizYerlerSlayt();
 }
 
-
-// =======================================================
-// SLAYT GÖSTERİSİ FONKSİYONLARI
-// =======================================================
-
+// SLAYT GÖSTERİSİ FONKSİYONLARI (Aynı kalır)
 function initializeGezdigimizYerlerSlayt() {
     const slaytKapsayici = document.getElementById('gezdigimizYerlerSlayt');
     
@@ -170,9 +291,7 @@ function nextSlayt() {
     if (slaytlar.length === 0) return;
 
     slaytlar[currentSlaytIndex].classList.remove('active');
-
     currentSlaytIndex = (currentSlaytIndex + 1) % slaytlar.length;
-
     slaytlar[currentSlaytIndex].classList.add('active');
 
     if (slaytlar[currentSlaytIndex].tagName === 'VIDEO') {
@@ -180,8 +299,35 @@ function nextSlayt() {
     }
 }
 
-// ... (Diğer fonksiyonlar: havaDurumuMesajiGoster, updateDetailedCounter, check vb. aynı kalır)
+
+// ... (startHeartRain, check, saatiBaslat, vb. diğer fonksiyonlar aynı kalır) ...
+
 
 // =======================================================
-// DİĞER TÜM KODLAR (Tekrar yazılmaz, önceki mesajdaki kodlar geçerlidir)
+// ANA KONTROL VE BAŞLANGIÇ
 // =======================================================
+
+function check() {
+    let pass = document.getElementById('password').value;
+
+    if(pass === DOGRU_SIFRE) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('content').classList.remove('hidden');
+
+        // TÜM ÖZELLİKLER SIRALI BAŞLAR
+        initializeGezdigimizYerlerSlayt(); // Slayt elemanlarını hazırlar
+        document.getElementById('music').play();
+        havaDurumuMesajiGoster(); 
+        updateDetailedCounter();
+        setInterval(updateDetailedCounter, 1000); 
+        startHeartRain();
+        rastgeleMesajGoster();
+        gosterAkisiSirala(); // Hikaye Akışını Başlatır
+        
+    } else {
+        document.getElementById('wrong').innerText = 'Yanlış şifre!';
+    }
+}
+
+saatiBaslat();
+enterTusuDinleyicisi();
