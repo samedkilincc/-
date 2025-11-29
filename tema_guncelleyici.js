@@ -1,30 +1,55 @@
 // =======================================================
-// TEMA GÜNCELLEYİCİ - SADECE ARKA PLAN RENGİNİ AYARLAR
+// TEMA GÜNCELLEYİCİ - JAVASCRIPT İLE DİREKT RENK ATAMASI
 // =======================================================
 
-// KASTAMONU VE API ANAHTARINIZ BU DOSYADA TANIMLIDIR
 const OPENWEATHER_API_KEY = "4bba39abc1a54bc8504cae5957a8b2c4"; 
 const SEHIR_ADI = "Kastamonu"; 
 
+// HAVA DURUMU KODLARINA GÖRE RENK PALETLERİ
+const TEMA_PALETLERI = {
+    // 2xx, 3xx, 5xx (Yağmurlu / Fırtınalı)
+    yagmurlu: 'linear-gradient(135deg, #486a98, #829cbc)', 
+    
+    // 6xx (Karlı)
+    karli: 'linear-gradient(135deg, #e4f1fe, #c4d7e7)', 
+    
+    // 7xx (Sisli, Dumanlı, Puslu) - Sizin de istediğiniz tema
+    sisli: 'linear-gradient(135deg, #a4b0be, #dfe4ea)', 
+    
+    // 800 (Açık)
+    gunesli: 'linear-gradient(135deg, #ffc439, #ff9139)', 
+    
+    // 80x (Bulutlu)
+    bulutlu: 'linear-gradient(135deg, #95a5a6, #bdc3c7)',
+    
+    // Varsayılan / Hata Durumu (Sizin özel pembe temanız)
+    varsayilan: 'linear-gradient(135deg, #ff9ec7, #ffd0e7)'
+};
+
+
 function temayiGuncelle(havaDurumuKodu) {
     const arkaPlanKatmani = document.getElementById('arkaPlanKatmani');
-    
-    // Eski sınıfları temizle
-    arkaPlanKatmani.classList.remove('hava-güneşli', 'hava-bulutlu', 'hava-yağmurlu', 'hava-karlı'); 
+    let atanacakTema = TEMA_PALETLERI.varsayilan;
 
-    // Hava durumu koduna göre sınıf atama
+    // Koda göre renk paleti seçimi
     if (havaDurumuKodu >= 200 && havaDurumuKodu <= 599) {
-        arkaPlanKatmani.classList.add('hava-yağmurlu');
+        atanacakTema = TEMA_PALETLERI.yagmurlu;
     } else if (havaDurumuKodu >= 600 && havaDurumuKodu <= 699) {
-        arkaPlanKatmani.classList.add('hava-karlı');
-    } else if (havaDurumuKodu >= 700 && havaDurumuKodu <= 800) {
-        // 800 (Açık) kodu Güneşli Temasına atanır
-        arkaPlanKatmani.classList.add('hava-güneşli');
+        atanacakTema = TEMA_PALETLERI.karli;
+    } else if (havaDurumuKodu >= 700 && havaDurumuKodu <= 799) { 
+        // 7xx kodları sis, duman vb. anlamına gelir
+        atanacakTema = TEMA_PALETLERI.sisli;
+    } else if (havaDurumuKodu === 800) {
+        atanacakTema = TEMA_PALETLERI.gunesli;
     } else if (havaDurumuKodu > 800) {
-        // 80x kodları Bulutlu Temasına atanır
-        arkaPlanKatmani.classList.add('hava-bulutlu');
+        atanacakTema = TEMA_PALETLERI.bulutlu;
     }
-    
+
+    // CSS sınıfı kullanmak yerine, direkt stil ataması yapıyoruz.
+    // Bu, tüm öncelik ve sınıflandırma sorunlarını çözer.
+    arkaPlanKatmani.style.background = atanacakTema;
+    arkaPlanKatmani.style.setProperty('filter', 'brightness(0.9)', 'important'); // Parlaklık ayarı
+
     // Hava durumu bilgisini saate ekle (sadece bir kere eklenir)
     const gosterge = document.getElementById('saatGostergeci');
     if (gosterge && !gosterge.innerText.includes(SEHIR_ADI)) {
@@ -42,11 +67,15 @@ function havaDurumuCekVeTemayiAyarla() {
             if (data && data.weather && data.weather.length > 0) {
                 const havaDurumuKodu = data.weather[0].id;
                 temayiGuncelle(havaDurumuKodu);
+            } else {
+                // API'dan veri gelmezse (ama hata vermezse) varsayılan tema kullanılır
+                temayiGuncelle(0);
             }
         })
         .catch(error => {
             console.error("Hava durumu verisi çekilemedi. Varsayılan tema kullanılacak.");
-            // Hata durumunda, index.html'e eklediğimiz varsayılan tema (hava-güneşli) görünmeye devam eder.
+            // Hata durumunda varsayılan tema kullanılır
+            temayiGuncelle(0); 
         });
 }
 
