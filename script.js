@@ -2,13 +2,13 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
-// İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ: 12 Kasım 2025, 15:30:00
+// İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ DÜZELTİLDİ
 let startDate = new Date("2025-11-12 15:30:00"); 
 
-const DOGRU_SIFRE = "27012004";
+const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
 
-// WEATHERAPI AYARLARI
+// WEATHERAPI AYARLARI (Doğrudan tanımlama ile hata çözüldü)
 const WEATHERAPI_KEY = "61f5c664edc0463abc591104252911"; 
 const SEHIR_ADI = "Kastamonu"; 
 
@@ -38,7 +38,7 @@ const gezdigimizYerlerMateryalleri = [
 ];
 
 // DİĞER SABİT MESAJLAR
-const askMesajlari = ["Seni Seviyorum ❤️", "Çok Seviyorum! ✨", "Sana Aşkım Sonsuz ♾️", "Seni her şeyden çok seviyorum.", "Dünyamın en güzelisin! 💖", "I Love You! 🥰", "Seninle Tamamlandım.", "Kalbimin Sahibi! 💘"];
+const askMesajlari = ["Seni Seviyorum ❤️", "Çok Seviyorum! ✨", "Sana Aşkım Sonsuz ♾️", "Seni her şeyden çok seviyorum.", "Dünyamın en güzelisin!💖", "I Love You! 🥰", "Seninle Tamamlandım.", "Kalbimin Sahibi! 💘"];
 
 let currentSlaytIndex = 0; 
 let slaytInterval;
@@ -50,7 +50,6 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 // =======================================================
 
 function havaDurumuMesajiGoster() {
-    // API Anahtarı, hatalı kodlamadan kurtarıldı.
     const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${SEHIR_ADI}&lang=tr`;
     const mesajKapsayici = document.getElementById('havaDurumuMesaji');
 
@@ -156,26 +155,10 @@ function rastgeleMesajGoster() {
 // AKIŞ YÖNETİMİ VE SLAYT FONKSİYONLARI
 // =======================================================
 
-function yazdirHarfHarf(element, metin, callback) {
-    let harfIndex = 0;
-    function yazdir() {
-        if (harfIndex < metin.length) {
-            element.innerHTML += metin.charAt(harfIndex);
-            harfIndex++;
-            setTimeout(yazdir, YAZI_HIZI);
-        } else {
-            if (callback) callback();
-        }
-    }
-    yazdir();
-}
-
-// 1. ADIM: Tüm Metin ve Resim Akışını Başlatır
 function gosterAkisiSirala() {
     gosterMetinVeResimAkisi(0); 
 }
 
-// 2. ADIM: Ana 4 Metin ve Resim Akışı
 function gosterMetinVeResimAkisi(metinIndex) {
     if (metinIndex < bolunmusMesajlar.length) {
         
@@ -184,7 +167,6 @@ function gosterMetinVeResimAkisi(metinIndex) {
         kapsayici.appendChild(metinKutusu);
         
         yazdirHarfHarf(metinKutusu, bolunmusMesajlar[metinIndex], function() {
-            // Metin bitince resmi göster
             if (metinIndex < photos.length) { 
                 const resimElementi = document.createElement('img');
                 resimElementi.src = photos[metinIndex];
@@ -192,19 +174,15 @@ function gosterMetinVeResimAkisi(metinIndex) {
                 kapsayici.appendChild(resimElementi);
             }
             
-            // Bir sonraki metin parçasını 1.5 saniye sonra başlat
             setTimeout(() => {
                 gosterMetinVeResimAkisi(metinIndex + 1);
             }, 1500); 
-
         });
     } else {
-        // 3. ADIM: Ana Akış bitti, Sabit Başlık ve Fotoğraflara geç
         gosterSabitIcerikler();
     }
 }
 
-// 3. ADIM: Çilekhan ve Kasımpatı Bölümlerini Ekle
 function gosterSabitIcerikler() {
     // Çilekhan Başlığı ve Fotoğrafı
     const cilekhanBaslik = document.createElement('h3');
@@ -236,7 +214,7 @@ function gosterSabitIcerikler() {
     kasimpatiResim.style.maxWidth = '400px';
     kapsayici.appendChild(kasimpatiResim);
 
-    // 4. ADIM: En Sona Slayt Bölümünü Ekle
+    // En Sona Slayt Bölümünü Ekle
     setTimeout(gosterSlaytBolumu, 1500); 
 }
 
@@ -249,17 +227,14 @@ function gosterSlaytBolumu() {
     slaytBaslik.style.marginBottom = '20px';
     kapsayici.appendChild(slaytBaslik);
     
-    // Slayt Kapsayıcısını oluştur
     const slaytKapsayici = document.createElement('div');
     slaytKapsayici.id = 'gezdigimizYerlerSlayt';
     slaytKapsayici.classList.add('slayt-kapsayici');
     kapsayici.appendChild(slaytKapsayici);
 
-    // Slaytı Başlat
     initializeGezdigimizYerlerSlayt();
 }
 
-// SLAYT GÖSTERİSİ FONKSİYONLARI (Aynı kalır)
 function initializeGezdigimizYerlerSlayt() {
     const slaytKapsayici = document.getElementById('gezdigimizYerlerSlayt');
     
@@ -300,11 +275,35 @@ function nextSlayt() {
 }
 
 
-// ... (startHeartRain, check, saatiBaslat, vb. diğer fonksiyonlar aynı kalır) ...
+function yazdirHarfHarf(element, metin, callback) {
+    let harfIndex = 0;
+    function yazdir() {
+        if (harfIndex < metin.length) {
+            element.innerHTML += metin.charAt(harfIndex);
+            harfIndex++;
+            setTimeout(yazdir, YAZI_HIZI);
+        } else {
+            if (callback) callback();
+        }
+    }
+    yazdir();
+}
+
+function startHeartRain() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "💗";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+        document.getElementById('hearts').appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }, 300);
+}
 
 
 // =======================================================
-// ANA KONTROL VE BAŞLANGIÇ
+// ANA KONTROL FONKSİYONU (Şifre Giriş)
 // =======================================================
 
 function check() {
@@ -315,19 +314,23 @@ function check() {
         document.getElementById('content').classList.remove('hidden');
 
         // TÜM ÖZELLİKLER SIRALI BAŞLAR
-        initializeGezdigimizYerlerSlayt(); // Slayt elemanlarını hazırlar
+        
         document.getElementById('music').play();
         havaDurumuMesajiGoster(); 
         updateDetailedCounter();
         setInterval(updateDetailedCounter, 1000); 
         startHeartRain();
         rastgeleMesajGoster();
-        gosterAkisiSirala(); // Hikaye Akışını Başlatır
+        gosterAkisiSirala(); // HİKAYE AKIŞINI BAŞLATIR
         
     } else {
         document.getElementById('wrong').innerText = 'Yanlış şifre!';
     }
 }
+
+// =======================================================
+// SAYFA BAŞLANGICINDA ÇALIŞACAK KODLAR
+// =======================================================
 
 saatiBaslat();
 enterTusuDinleyicisi();
