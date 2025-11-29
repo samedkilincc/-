@@ -8,7 +8,7 @@ let startDate = new Date("2025-11-12 15:30:00");
 const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
 
-// WEATHERAPI AYARLARI (Process hatası çözüldü)
+// WEATHERAPI AYARLARI (Doğrudan tanımlama ile process hatası çözüldü)
 const WEATHERAPI_KEY = "61f5c664edc0463abc591104252911"; 
 const SEHIR_ADI = "Kastamonu"; 
 
@@ -28,7 +28,7 @@ let bolunmusMesajlar = [
     "Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. Her zaman, her anında yanında olmak istiyorum. Birlikte aşarız insanı olalım. İyi ki varsın, iyi ki benim sevgilimsin.❤️"
 ];
 
-// YENİ SLAYT MATERYALLERİ (Gezdiğimiz Yerler)
+// YENİ GEZDİĞİMİZ YERLER MATERYALLERİ (Alt Alta Eklenecek)
 const gezdigimizYerlerMateryalleri = [
     { type: 'image', src: "images/IMG-20251128-WA0034.jpg" },
     { type: 'image', src: "images/IMG-20251128-WA0035.jpg" },
@@ -40,8 +40,7 @@ const gezdigimizYerlerMateryalleri = [
 // DİĞER SABİT MESAJLAR
 const askMesajlari = ["Seni Seviyorum ❤️", "Çok Seviyorum! ✨", "Sana Aşkım Sonsuz ♾️", "Seni her şeyden çok seviyorum.", "Dünyamın en güzelisin! 💖", "I Love You! 🥰", "Seninle Tamamlandım.", "Kalbimin Sahibi! 💘"];
 
-let currentSlaytIndex = 0; 
-let slaytInterval;
+let akisIndex = 0;
 const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
@@ -152,7 +151,7 @@ function rastgeleMesajGoster() {
 
 
 // =======================================================
-// AKIŞ YÖNETİMİ VE SLAYT FONKSİYONLARI
+// SIRALI AKIŞ YÖNETİMİ
 // =======================================================
 
 function gosterAkisiSirala() {
@@ -176,156 +175,4 @@ function gosterMetinVeResimAkisi(metinIndex) {
             
             setTimeout(() => {
                 gosterMetinVeResimAkisi(metinIndex + 1);
-            }, 1500); 
-        });
-    } else {
-        gosterSabitIcerikler();
-    }
-}
-
-function gosterSabitIcerikler() {
-    // Çilekhan Başlığı ve Fotoğrafı
-    const cilekhanBaslik = document.createElement('h3');
-    cilekhanBaslik.classList.add('hikaye-metni');
-    cilekhanBaslik.innerHTML = '<b style="font-size: 26px;">İlk çocuğumuz Çilekhan</b>';
-    cilekhanBaslik.style.textAlign = 'center';
-    cilekhanBaslik.style.marginTop = '50px';
-    cilekhanBaslik.style.marginBottom = '20px';
-    kapsayici.appendChild(cilekhanBaslik);
-    
-    const cilekhanResim = document.createElement('img');
-    cilekhanResim.src = "images/WhatsApp Görsel 2025-11-28 saat 21.54.46_089aff93.jpg";
-    cilekhanResim.classList.add('hikaye-resmi');
-    cilekhanResim.style.maxWidth = '400px';
-    kapsayici.appendChild(cilekhanResim);
-
-    // Kasımpatı Başlığı ve Fotoğrafı
-    const kasimpatiBaslik = document.createElement('h3');
-    kasimpatiBaslik.classList.add('hikaye-metni');
-    kasimpatiBaslik.innerHTML = '<b style="font-size: 26px;">İlk kasımpatın ve çiçeğin</b>';
-    kasimpatiBaslik.style.textAlign = 'center';
-    kasimpatiBaslik.style.marginTop = '50px';
-    kasimpatiBaslik.style.marginBottom = '20px';
-    kapsayici.appendChild(kasimpatiBaslik);
-
-    const kasimpatiResim = document.createElement('img');
-    kasimpatiResim.src = "images/WhatsApp Görsel 2025-11-28 saat 21.54.01_63be7dee.jpg";
-    kasimpatiResim.classList.add('hikaye-resmi');
-    kasimpatiResim.style.maxWidth = '400px';
-    kapsayici.appendChild(kasimpatiResim);
-
-    // En Sona Slayt Bölümünü Ekle
-    setTimeout(gosterSlaytBolumu, 1500); 
-}
-
-function gosterSlaytBolumu() {
-    const slaytBaslik = document.createElement('h3');
-    slaytBaslik.classList.add('hikaye-metni');
-    slaytBaslik.innerHTML = '<b style="font-size: 26px;">Gezdiğimiz Yerler</b>';
-    slaytBaslik.style.textAlign = 'center';
-    slaytBaslik.style.marginTop = '50px';
-    slaytBaslik.style.marginBottom = '20px';
-    kapsayici.appendChild(slaytBaslik);
-    
-    const slaytKapsayici = document.createElement('div');
-    slaytKapsayici.id = 'gezdigimizYerlerSlayt';
-    slaytKapsayici.classList.add('slayt-kapsayici');
-    kapsayici.appendChild(slaytKapsayici);
-
-    initializeGezdigimizYerlerSlayt();
-}
-
-function initializeGezdigimizYerlerSlayt() {
-    const slaytKapsayici = document.getElementById('gezdigimizYerlerSlayt');
-    
-    gezdigimizYerlerMateryalleri.forEach((materyal, index) => {
-        let element;
-        if (materyal.type === 'image') {
-            element = document.createElement('img');
-            element.src = materyal.src;
-        } else if (materyal.type === 'video') {
-            element = document.createElement('video');
-            element.src = materyal.src;
-            element.controls = false;
-            element.loop = true;
-            element.muted = true;
-            element.autoplay = true; 
-        }
-
-        element.classList.add('slayt-materyal');
-        if (index === 0) element.classList.add('active'); 
-
-        slaytKapsayici.appendChild(element);
-    });
-
-    slaytInterval = setInterval(nextSlayt, 3500); 
-}
-
-function nextSlayt() {
-    const slaytlar = document.querySelectorAll('#gezdigimizYerlerSlayt .slayt-materyal');
-    if (slaytlar.length === 0) return;
-
-    slaytlar[currentSlaytIndex].classList.remove('active');
-    currentSlaytIndex = (currentSlaytIndex + 1) % slaytlar.length;
-    slaytlar[currentSlaytIndex].classList.add('active');
-
-    if (slaytlar[currentSlaytIndex].tagName === 'VIDEO') {
-        slaytlar[currentSlaytIndex].play();
-    }
-}
-
-function yazdirHarfHarf(element, metin, callback) {
-    let harfIndex = 0;
-    function yazdir() {
-        if (harfIndex < metin.length) {
-            element.innerHTML += metin.charAt(harfIndex);
-            harfIndex++;
-            setTimeout(yazdir, YAZI_HIZI);
-        } else {
-            if (callback) callback();
-        }
-    }
-    yazdir();
-}
-
-function startHeartRain() {
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerText = "💗";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
-        document.getElementById('hearts').appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-    }, 300);
-}
-
-
-// =======================================================
-// ANA KONTROL VE BAŞLANGIÇ
-// =======================================================
-
-function check() {
-    let pass = document.getElementById('password').value;
-
-    if(pass === DOGRU_SIFRE) {
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('content').classList.remove('hidden');
-
-        // TÜM ÖZELLİKLER SIRALI BAŞLAR
-        
-        document.getElementById('music').play();
-        havaDurumuMesajiGoster(); 
-        updateDetailedCounter();
-        setInterval(updateDetailedCounter, 1000); 
-        startHeartRain();
-        rastgeleMesajGoster();
-        gosterAkisiSirala(); // HİKAYE AKIŞINI BAŞLATIR
-        
-    } else {
-        document.getElementById('wrong').innerText = 'Yanlış şifre!';
-    }
-}
-
-saatiBaslat();
-enterTusuDinleyicisi();
+            }, 1500);
