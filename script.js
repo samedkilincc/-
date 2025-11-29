@@ -7,9 +7,8 @@ let startDate = new Date("2025-11-12");
 
 const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
-const MUZIK_DOSYA_ADI = "Neyleyim.mp3"; 
 
-// Resim Yolları
+// Resim Yolları - Lütfen kendi resimlerinizin yollarını buraya girin
 let photos = [
     "images/WhatsApp Görsel 2025-11-17 saat 23.30.49_e611421e.jpg",
     "images/WhatsApp Görsel 2025-11-12 saat 21.16.41_d90d8e5e.jpg",
@@ -17,14 +16,12 @@ let photos = [
     "images/WhatsApp Görsel 2025-11-17 saat 23.30.55_45c99fa5.jpg"
 ];
 
-// SADECE 'Seni Seviyorum' temalı mesajlar
 const askMesajlari = [
     "Seni Seviyorum ❤️", "Çok Seviyorum! ✨", "Sana Aşkım Sonsuz ♾️", 
     "Seni her şeyden çok seviyorum.", "Dünyamın en güzelisin! 💖", "I Love You! 🥰", 
     "Seninle Tamamlandım.", "Kalbimin Sahibi! 💘"
 ];
 
-// ELLE BÖLÜNMÜŞ MESAJ PARÇALARI
 let bolunmusMesajlar = [
     "Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın, belki de bu düşüncemi özgün bulmayıp beğenmeden sıkılıp bu ne böyle diyeceğin bir şeyle karşındayım.",
     "Belki bu fikir özgün değil kabul ediyorum ama şunu bilmeni istiyorum ki yazacağım bu yazıyı tamamen benliğimle yazıyorum. Evet bir şair değilim yazar değilim ki burada edebi güzellemeler yapıp hoşuna gidecek cümleleri yazayım.",
