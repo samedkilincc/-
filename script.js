@@ -5,7 +5,7 @@
 // LÜTFEN BAŞLANGIÇ TARİHİNİ KONTROL EDİN
 let startDate = new Date("2025-11-12"); 
 
-// API Anahtarı kaldırıldı.
+// Hava durumu API sabitleri BU DOSYADAN ÇIKARILMIŞTIR.
 const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
 const MUZIK_DOSYA_ADI = "Hüseyin Kemancı - AŞK.mp3"; 
@@ -39,25 +39,8 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
 // =======================================================
-// TEMA VE ZAMAN FONKSİYONLARI
+// ZAMAN VE SAYAC FONKSİYONLARI (Hava durumu fonksiyonları silindi)
 // =======================================================
-
-function saatiKontrolEtVeTemayiAyarla() {
-    const saat = new Date().getHours();
-    const arkaPlanKatmani = document.getElementById('arkaPlanKatmani');
-    
-    // Eski sınıfları temizle
-    arkaPlanKatmani.classList.remove('hava-güneşli', 'hava-gece'); 
-
-    // Saat 07:00 (sabah) ile 19:00 (akşam) arası ise GÜNDÜZ teması
-    if (saat >= 7 && saat < 19) {
-        arkaPlanKatmani.classList.add('hava-güneşli');
-    } else {
-        // Geri kalan saatlerde GECE teması
-        arkaPlanKatmani.classList.add('hava-gece');
-    }
-}
-
 
 function guncelSaatiGoster() {
     const tarih = new Date();
@@ -72,9 +55,7 @@ function guncelSaatiGoster() {
 
 function saatiBaslat() {
     guncelSaatiGoster(); 
-    saatiKontrolEtVeTemayiAyarla(); 
     setInterval(guncelSaatiGoster, 1000); 
-    setInterval(saatiKontrolEtVeTemayiAyarla, 3600000); 
 }
 
 function updateDetailedCounter() {
@@ -107,10 +88,7 @@ function updateDetailedCounter() {
     `;
 }
 
-
-// =======================================================
-// HİKAYE AKIŞI VE DİĞER ÖZELLİKLER
-// =======================================================
+// ... (Diğer fonksiyonlar aynı kalır)
 
 function enterTusuDinleyicisi() {
     const sifreInput = document.getElementById('password');
