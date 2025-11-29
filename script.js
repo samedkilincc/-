@@ -2,16 +2,14 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
-// BURAYA İLİŞKİNİZİN BAŞLADIĞI GÜN VE SAATİ YAZIN
+// İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ: 12 Kasım 2025, 15:30
 let startDate = new Date("2025-11-12 15:30:00"); 
 
-const DOGRU_SIFRE = "27012004";
-// ... (Kodun geri kalanı aynı kalır)
-const DOGRU_SIFRE = "27012004";
+const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
 
-// WEATHERAPI AYARLARI (Yeni anahtarınız buraya yerleştirildi)
-const WEATHERAPI_KEY = "61f5c664edc0463abc591104252911"; 
+// WEATHERAPI AYARLARI: Anahtar, Netlify Ortam Değişkeninden çekilir
+const WEATHERAPI_KEY = process.env.WEATHERAPI_KEY; 
 const SEHIR_ADI = "Kastamonu"; 
 
 // Resim Yolları
@@ -41,27 +39,31 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
 // =======================================================
-// YENİ: HAVA DURUMU MESAJI FONKSİYONU
+// HAVA DURUMU MESAJI VE DİĞER FONKSİYONLAR
 // =======================================================
 
 function havaDurumuMesajiGoster() {
-    // WeatherAPI'dan veri çekerken dil parametresini Türkçe yapıyoruz (&lang=tr)
+    // Anahtar, Netlify'dan çekilecek
+    if (!WEATHERAPI_KEY) { 
+        console.error("API Anahtarı bulunamadı. Lütfen Netlify'da ayarlayın.");
+        return; 
+    }
+    
     const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${SEHIR_ADI}&lang=tr`;
     const mesajKapsayici = document.getElementById('havaDurumuMesaji');
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            // WeatherAPI'da condition > text içinde hava durumu Türkçe olarak gelir
             if (data && data.current && data.current.condition) {
-                const durum = data.current.condition.text.toLowerCase(); // Örn: "parçalı bulutlu"
+                const durum = data.current.condition.text.toLowerCase();
                 let mesaj = "";
 
-                // Temel durum kontrolü ve mesaj ataması
+                // Hava durumu mesajı mantığı
                 if (durum.includes("yağmur") || durum.includes("sağanak") || durum.includes("çise") || durum.includes("dolu")) {
                     mesaj = `☔ Bugün ${SEHIR_ADI}'da hava **yağmurlu**. Dışarı çıkarken yanına şemsiyeni ve içimi ısıtan gülümsemeni almayı unutma!`;
                 } else if (durum.includes("kar") || durum.includes("sulu kar")) {
-                    mesaj = `❄️ ${SEHIR_ADI}'da **kar** yağıyor! Birlikteliğimizin en sıcak gününü yaşıyoruz. Kombinini ona göre yap, soğuk almasın.`;
+                    mesaj = `❄️ ${SEHIR_ADI}'ya **kar** yağıyor! Birlikteliğimizin en sıcak günü. Kombinini ona göre yap, soğuk almasın.`;
                 } else if (durum.includes("sis") || durum.includes("duman") || durum.includes("pus")) {
                     mesaj = `🌫️ ${SEHIR_ADI}'da hava **sisli**. Unutma, nerede olursan ol, kalbimdeki yolun her zaman açık!`;
                 } else if (durum.includes("güneşli") || durum.includes("açık") || durum.includes("güneş")) {
@@ -78,14 +80,8 @@ function havaDurumuMesajiGoster() {
         })
         .catch(error => {
             console.error("Hava durumu mesajı çekilemedi:", error);
-            // Hata durumunda mesajı sessizce atlıyoruz, kullanıcıya hata göstermiyoruz.
         });
 }
-
-
-// =======================================================
-// DİĞER FONKSİYONLAR (Aynı kaldı)
-// =======================================================
 
 function guncelSaatiGoster() {
     const tarih = new Date();
@@ -218,7 +214,7 @@ function check() {
         // Tüm Özellikleri Başlat
         document.getElementById("music").play();
         
-        // HAVA DURUMU MESAJINI ÇEK VE GÖSTER (EN ÜSTTE)
+        // ÖNEMLİ: Hava Durumu Mesajı Gösteriliyor
         havaDurumuMesajiGoster(); 
         
         updateDetailedCounter();
