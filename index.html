@@ -4,50 +4,10 @@
     <meta charset="UTF-8">
     <title>🩶</title> 
     <link rel="stylesheet" href="style.css"> 
+    
+    <script src="tema_guncelleyici.js" defer></script> 
 
-    <script>
-        // API Anahtarınız ve Şehir Adı
-        const OPENWEATHER_API_KEY = "4bba39abc1a54bc8504cae5957a8b2c4"; 
-        const SEHIR_ADI = "Kastamonu"; 
-
-        function temayiGuncelle(havaDurumuKodu) {
-            const body = document.body;
-            
-            // Hava durumu koduna göre sınıf atama
-            if (havaDurumuKodu >= 200 && havaDurumuKodu <= 599) {
-                body.classList.add('hava-yağmurlu');
-            } else if (havaDurumuKodu >= 600 && havaDurumuKodu <= 699) {
-                body.classList.add('hava-karlı');
-            } else if (havaDurumuKodu >= 700 && havaDurumuKodu <= 800) {
-                body.classList.add('hava-güneşli');
-            } else if (havaDurumuKodu > 800) {
-                body.classList.add('hava-bulutlu');
-            }
-        }
-
-        function havaDurumuCek() {
-            // API anahtarının boş olup olmadığını kontrol etmeye gerek yok, zaten sabit tanımlı
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${SEHIR_ADI}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=tr`;
-
-            // Veri çekme işlemi
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.weather && data.weather.length > 0) {
-                        const havaDurumuKodu = data.weather[0].id;
-                        temayiGuncelle(havaDurumuKodu);
-                    }
-                })
-                .catch(error => {
-                    console.error("Hava durumu verisi çekilemedi:", error);
-                });
-        }
-        
-        // Sayfa yüklenmeden önce hava durumunu çekmeye başla
-        havaDurumuCek();
-
-    </script>
-    </head>
+</head>
 <body>
     
     <div id="arkaPlanKatmani"></div> 
@@ -60,11 +20,11 @@
             Yükleniyor...
         </span> 
         
-        <h1 class="ozel-baslik"><span>❤️</span></h1> 
+        <h1 class="ozel-baslik">Samed <span>❤️</span> Hatice</h1> 
         
         <h3>Şifreyi gir sevgilim 💕</h3>
         <p style="font-size: 14px; color: #555; margin-bottom: 10px;">
-            Tarihi değiştirdim. Sadece ikimizin bildiği o tarih. 😘
+            Özel bir tarih (herhangi bir noktalama işareti kullanmadan tarihi tamamıyla gir. Örneğin: 01012025)
         </p>
         <input type="password" id="password" placeholder="Şifre...">
         <button onclick="check()">Giriş</button> 

@@ -6,7 +6,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Bulanık Arka Plan Katmanı (Tema Renkleri buraya gelir) */
+/* Bulanık Arka Plan Katmanı (Temalar buraya gelir) */
 #arkaPlanKatmani {
     position: fixed; 
     top: 0;
@@ -24,16 +24,23 @@ body {
     background: linear-gradient(135deg, #ff9ec7, #ffd0e7); 
 }
 
-/* GÜNDÜZ/GECE TEMALARI */
-/* GÜNDÜZ TEMASI (07:00 - 19:00 arası) */
+/* ======================================================= */
+/* HAVA DURUMU TEMALARI */
+/* ======================================================= */
+
 .hava-güneşli {
-    background: linear-gradient(135deg, #ff9ec7, #ffd0e7) !important; 
+    background: linear-gradient(135deg, #ffc439, #ff9139) !important; /* Güneşli Tema */
+}
+.hava-bulutlu {
+    background: linear-gradient(135deg, #95a5a6, #bdc3c7) !important; /* Bulutlu Tema */
+}
+.hava-yağmurlu {
+    background: linear-gradient(135deg, #486a98, #829cbc) !important; /* Yağmurlu Tema */
+}
+.hava-karlı {
+    background: linear-gradient(135deg, #e4f1fe, #c4d7e7) !important; /* Karlı Tema */
 }
 
-/* GECE TEMASI (19:00 - 07:00 arası) */
-.hava-gece {
-    background: linear-gradient(135deg, #4d4f68, #2e3044) !important; 
-}
 
 /* Şifre Giriş Ekranı Başlık Stili */
 .ozel-baslik {
@@ -51,7 +58,7 @@ body {
 @keyframes nabiz {
     0% { transform: scale(1); }
     50% { transform: scale(1.15); }
-    100% { transform: scale(1); }
+    100% { transform is scale(1); }
 }
 
 /* Şifre Kutusu ve Input Stilleri */

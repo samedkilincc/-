@@ -5,10 +5,9 @@
 // LÜTFEN BAŞLANGIÇ TARİHİNİ KONTROL EDİN
 let startDate = new Date("2025-11-12"); 
 
-// Hava durumu API sabitleri BU DOSYADAN ÇIKARILMIŞTIR.
-const DOGRU_SIFRE = "27012004";
+const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
-const MUZIK_DOSYA_ADI = "Hüseyin Kemancı - AŞK.mp3"; 
+const MUZIK_DOSYA_ADI = "Neyleyim.mp3"; 
 
 // Resim Yolları
 let photos = [
@@ -39,7 +38,7 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
 // =======================================================
-// ZAMAN VE SAYAC FONKSİYONLARI (Hava durumu fonksiyonları silindi)
+// ZAMAN VE SAYAC FONKSİYONLARI
 // =======================================================
 
 function guncelSaatiGoster() {
@@ -88,7 +87,10 @@ function updateDetailedCounter() {
     `;
 }
 
-// ... (Diğer fonksiyonlar aynı kalır)
+
+// =======================================================
+// HİKAYE AKIŞI VE DİĞER ÖZELLİKLER
+// =======================================================
 
 function enterTusuDinleyicisi() {
     const sifreInput = document.getElementById('password');
