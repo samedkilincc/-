@@ -1,0 +1,136 @@
+body {
+    background: none; 
+    font-family: 'Times New Roman', serif; 
+    text-align: center;
+    padding: 40px;
+    overflow-x: hidden;
+}
+
+/* Bulanık Arka Plan Katmanı (Tema Renkleri buraya gelir) */
+#arkaPlanKatmani {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-image: url('images/arka_plan.jpg'); */ 
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    filter: brightness(0.9); 
+    z-index: -1;
+    
+    /* Varsayılan Tema */
+    background: linear-gradient(135deg, #ff9ec7, #ffd0e7); 
+}
+
+/* GÜNDÜZ/GECE TEMALARI */
+/* GÜNDÜZ TEMASI (07:00 - 19:00 arası) */
+.hava-güneşli {
+    background: linear-gradient(135deg, #ff9ec7, #ffd0e7) !important; 
+}
+
+/* GECE TEMASI (19:00 - 07:00 arası) */
+.hava-gece {
+    background: linear-gradient(135deg, #4d4f68, #2e3044) !important; 
+}
+
+/* Şifre Giriş Ekranı Başlık Stili */
+.ozel-baslik {
+    font-family: 'Times New Roman', serif;
+    font-size: 32px;
+    color: #ff3c9d; 
+    text-shadow: 0 0 10px rgba(255, 100, 150, 0.6); 
+    margin-bottom: 25px;
+}
+.ozel-baslik span {
+    color: #e74c3c; 
+    animation: nabiz 1.5s infinite; 
+    display: inline-block;
+}
+@keyframes nabiz {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+/* Şifre Kutusu ve Input Stilleri */
+.box {
+    background: white;
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(255, 60, 165, 0.4);
+}
+.hidden {
+    display: none !important; 
+}
+input {
+    width: 90%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid pink;
+}
+button {
+    background: #ff8ab8;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+    font-family: 'Times New Roman', serif; 
+}
+button:hover {
+    background: #ff3c9d;
+}
+
+/* Hikaye Akışı ve Resim Stilleri */
+.hikaye-resmi { 
+    width: 90%;
+    max-width: 500px; 
+    border-radius: 12px;
+    margin: 30px auto; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: block; 
+}
+.hikaye-metni { 
+    font-family: 'Times New Roman', serif; 
+    font-size: 22px;
+    line-height: 1.8;
+    color: #ff3c9d;
+    white-space: pre-wrap;
+    text-align: left; 
+    margin: 30px auto;
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 60, 165, 0.3);
+}
+
+/* Kalp Yağmuru Stili */
+#hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; 
+    z-index: 10; 
+}
+.heart {
+    position: absolute;
+    color: pink;
+    font-size: 24px;
+    animation: fall 4s linear infinite;
+}
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
