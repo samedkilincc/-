@@ -8,7 +8,11 @@ let startDate = new Date("2025-11-12");
 const DOGRU_SIFRE = "12112025";
 const YAZI_HIZI = 40; 
 
-// Resim Yolları - Lütfen kendi resimlerinizin yollarını buraya girin
+// WEATHERAPI AYARLARI (Yeni anahtarınız buraya yerleştirildi)
+const WEATHERAPI_KEY = "61f5c664edc0463abc591104252911"; 
+const SEHIR_ADI = "Kastamonu"; 
+
+// Resim Yolları
 let photos = [
     "images/WhatsApp Görsel 2025-11-17 saat 23.30.49_e611421e.jpg",
     "images/WhatsApp Görsel 2025-11-12 saat 21.16.41_d90d8e5e.jpg",
@@ -35,7 +39,50 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 
 
 // =======================================================
-// ZAMAN VE SAYAC FONKSİYONLARI
+// YENİ: HAVA DURUMU MESAJI FONKSİYONU
+// =======================================================
+
+function havaDurumuMesajiGoster() {
+    // WeatherAPI'dan veri çekerken dil parametresini Türkçe yapıyoruz (&lang=tr)
+    const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${SEHIR_ADI}&lang=tr`;
+    const mesajKapsayici = document.getElementById('havaDurumuMesaji');
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            // WeatherAPI'da condition > text içinde hava durumu Türkçe olarak gelir
+            if (data && data.current && data.current.condition) {
+                const durum = data.current.condition.text.toLowerCase(); // Örn: "parçalı bulutlu"
+                let mesaj = "";
+
+                // Temel durum kontrolü ve mesaj ataması
+                if (durum.includes("yağmur") || durum.includes("sağanak") || durum.includes("çise") || durum.includes("dolu")) {
+                    mesaj = `☔ Bugün ${SEHIR_ADI}'da hava **yağmurlu**. Dışarı çıkarken yanına şemsiyeni ve içimi ısıtan gülümsemeni almayı unutma!`;
+                } else if (durum.includes("kar") || durum.includes("sulu kar")) {
+                    mesaj = `❄️ ${SEHIR_ADI}'da **kar** yağıyor! Birlikteliğimizin en sıcak gününü yaşıyoruz. Kombinini ona göre yap, soğuk almasın.`;
+                } else if (durum.includes("sis") || durum.includes("duman") || durum.includes("pus")) {
+                    mesaj = `🌫️ ${SEHIR_ADI}'da hava **sisli**. Unutma, nerede olursan ol, kalbimdeki yolun her zaman açık!`;
+                } else if (durum.includes("güneşli") || durum.includes("açık") || durum.includes("güneş")) {
+                    mesaj = `☀️ Bugün ${SEHIR_ADI}'da hava pırıl pırıl **güneşli**. Tıpkı aşkımızın geleceği gibi!`;
+                } else if (durum.includes("bulutlu") || durum.includes("kapalı")) {
+                    mesaj = `☁️ ${SEHIR_ADI}'da hava biraz **bulutlu** ama unutma, sen benim güneşimsin!`;
+                } else {
+                     mesaj = `🌍 Bugün ${SEHIR_ADI}'daki hava durumu: **${durum}**. Günümüz hep özel!`;
+                }
+
+                mesajKapsayici.innerHTML = `<p style="font-weight: bold; margin-bottom: 10px; color: #ff3c9d;"> Hava Durumu Bilgisi:</p>${mesaj}`;
+                mesajKapsayici.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error("Hava durumu mesajı çekilemedi:", error);
+            // Hata durumunda mesajı sessizce atlıyoruz, kullanıcıya hata göstermiyoruz.
+        });
+}
+
+
+// =======================================================
+// DİĞER FONKSİYONLAR (Aynı kaldı)
 // =======================================================
 
 function guncelSaatiGoster() {
@@ -45,7 +92,6 @@ function guncelSaatiGoster() {
 
     const gosterge = document.getElementById('saatGostergeci');
     if (gosterge) {
-        // NOT: Şehir adı, tema_guncelleyici.js tarafından buraya eklenecektir.
         gosterge.innerText = `${gun} | ${saat}`;
     }
 }
@@ -84,11 +130,6 @@ function updateDetailedCounter() {
         Bugün birlikteliğimizin tam: <b><br>${output}</b> 💞
     `;
 }
-
-
-// =======================================================
-// HİKAYE AKIŞI VE DİĞER ÖZELLİKLER
-// =======================================================
 
 function enterTusuDinleyicisi() {
     const sifreInput = document.getElementById('password');
@@ -174,6 +215,10 @@ function check() {
 
         // Tüm Özellikleri Başlat
         document.getElementById("music").play();
+        
+        // HAVA DURUMU MESAJINI ÇEK VE GÖSTER (EN ÜSTTE)
+        havaDurumuMesajiGoster(); 
+        
         updateDetailedCounter();
         setInterval(updateDetailedCounter, 1000); 
         startHeartRain();

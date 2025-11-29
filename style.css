@@ -6,27 +6,40 @@ body {
     overflow-x: hidden;
 }
 
-/* Bulanık Arka Plan Katmanı (Temalar buraya JavaScript ile uygulanır) */
+/* Bulanık Arka Plan Katmanı (Temalar buraya gelir) */
 #arkaPlanKatmani {
     position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    /* background-image: url('images/arka_plan.jpg'); */ 
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
-    filter: brightness(0.9); /* Arka planı biraz karartmak için */
+    filter: brightness(0.9); 
     z-index: -1;
     
-    /* Varsayılan Pembe Tema (JS yüklenemezse bu görünür) */
+    /* Varsayılan Pembe Tema KALICI OLARAK BURADA KALACAK */
     background: linear-gradient(135deg, #ff9ec7, #ffd0e7); 
 }
 
-/* ======================================================= */
-/* BAŞLIK VE GİRİŞ EKRANI STİLLERİ */
-/* ======================================================= */
+/* Bu sınıflar artık JavaScript tarafından kullanılmasa da CSS'te kalabilir. */
+.hava-güneşli {
+    background: linear-gradient(135deg, #ffc439, #ff9139) !important; 
+}
+.hava-bulutlu {
+    background: linear-gradient(135deg, #95a5a6, #bdc3c7) !important; 
+}
+.hava-yağmurlu {
+    background: linear-gradient(135deg, #486a98, #829cbc) !important; 
+}
+.hava-karlı {
+    background: linear-gradient(135deg, #e4f1fe, #c4d7e7) !important; 
+}
 
+
+/* Şifre Giriş Ekranı Başlık Stili */
 .ozel-baslik {
     font-family: 'Times New Roman', serif;
     font-size: 32px;
@@ -42,9 +55,10 @@ body {
 @keyframes nabiz {
     0% { transform: scale(1); }
     50% { transform: scale(1.15); }
-    100% { transform: scale(1); }
+    100% { transform is scale(1); }
 }
 
+/* Şifre Kutusu ve Input Stilleri */
 .box {
     background: white;
     width: 300px;
@@ -77,10 +91,7 @@ button:hover {
     background: #ff3c9d;
 }
 
-/* ======================================================= */
-/* İÇERİK STİLLERİ */
-/* ======================================================= */
-
+/* Hikaye Akışı ve Resim Stilleri */
 .hikaye-resmi { 
     width: 90%;
     max-width: 500px; 
@@ -105,10 +116,7 @@ button:hover {
     box-shadow: 0 0 20px rgba(255, 60, 165, 0.3);
 }
 
-/* ======================================================= */
-/* KALPLER VE DİĞER EFEKTLER */
-/* ======================================================= */
-
+/* Kalp Yağmuru Stili */
 #hearts {
     position: fixed;
     top: 0;
