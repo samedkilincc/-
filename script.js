@@ -2,13 +2,13 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
-// İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ DÜZELTİLDİ
+// İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ: 12 Kasım 2025, 15:30:00
 let startDate = new Date("2025-11-12 15:30:00"); 
 
 const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
 
-// WEATHERAPI AYARLARI (Metin mesajı için)
+// WEATHERAPI AYARLARI (Process hatası çözüldü)
 const WEATHERAPI_KEY = "61f5c664edc0463abc591104252911"; 
 const SEHIR_ADI = "Kastamonu"; 
 
@@ -152,7 +152,7 @@ function rastgeleMesajGoster() {
 
 
 // =======================================================
-// AKIŞ YÖNETİMİ VE SLAYT FONKSİYONLARI (DÜZELTİLDİ)
+// AKIŞ YÖNETİMİ VE SLAYT FONKSİYONLARI
 // =======================================================
 
 function gosterAkisiSirala() {
@@ -274,7 +274,31 @@ function nextSlayt() {
     }
 }
 
-// ... (Diğer küçük fonksiyonlar: yazdirHarfHarf, startHeartRain aynı kalır) ...
+function yazdirHarfHarf(element, metin, callback) {
+    let harfIndex = 0;
+    function yazdir() {
+        if (harfIndex < metin.length) {
+            element.innerHTML += metin.charAt(harfIndex);
+            harfIndex++;
+            setTimeout(yazdir, YAZI_HIZI);
+        } else {
+            if (callback) callback();
+        }
+    }
+    yazdir();
+}
+
+function startHeartRain() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "💗";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+        document.getElementById('hearts').appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }, 300);
+}
 
 
 // =======================================================
