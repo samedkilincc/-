@@ -25,20 +25,20 @@ body {
 }
 
 /* ======================================================= */
-/* HAVA DURUMU TEMALARI */
+/* HAVA DURUMU TEMALARI (Yüksek Öncelikli) */
 /* ======================================================= */
 
 .hava-güneşli {
-    background: linear-gradient(135deg, #ffc439, #ff9139) !important; /* Güneşli Tema */
+    background: linear-gradient(135deg, #ffc439, #ff9139) !important; 
 }
 .hava-bulutlu {
-    background: linear-gradient(135deg, #95a5a6, #bdc3c7) !important; /* Bulutlu Tema */
+    background: linear-gradient(135deg, #95a5a6, #bdc3c7) !important; 
 }
 .hava-yağmurlu {
-    background: linear-gradient(135deg, #486a98, #829cbc) !important; /* Yağmurlu Tema */
+    background: linear-gradient(135deg, #486a98, #829cbc) !important; 
 }
 .hava-karlı {
-    background: linear-gradient(135deg, #e4f1fe, #c4d7e7) !important; /* Karlı Tema */
+    background: linear-gradient(135deg, #e4f1fe, #c4d7e7) !important; 
 }
 
 
@@ -57,11 +57,11 @@ body {
 }
 @keyframes nabiz {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform is scale(1.15); }
     100% { transform is scale(1); }
 }
 
-/* Şifre Kutusu ve Input Stilleri */
+/* Şifre Kutusu ve Input Stilleri (Diğer stiller aynı kalır) */
 .box {
     background: white;
     width: 300px;
@@ -94,7 +94,7 @@ button:hover {
     background: #ff3c9d;
 }
 
-/* Hikaye Akışı ve Resim Stilleri */
+/* Hikaye Akışı ve Resim Stilleri (Diğer stiller aynı kalır) */
 .hikaye-resmi { 
     width: 90%;
     max-width: 500px; 
@@ -119,7 +119,7 @@ button:hover {
     box-shadow: 0 0 20px rgba(255, 60, 165, 0.3);
 }
 
-/* Kalp Yağmuru Stili */
+/* Kalp Yağmuru Stili (Diğer stiller aynı kalır) */
 #hearts {
     position: fixed;
     top: 0;

@@ -2,12 +2,11 @@
 // TEMA GÜNCELLEYİCİ - SADECE ARKA PLAN RENGİNİ AYARLAR
 // =======================================================
 
-// LÜTFEN BU API ANAHTARININ DOĞRU OLDUĞUNDAN EMİN OLUN
+// KASTAMONU VE API ANAHTARINIZ BU DOSYADA TANIMLIDIR
 const OPENWEATHER_API_KEY = "4bba39abc1a54bc8504cae5957a8b2c4"; 
 const SEHIR_ADI = "Kastamonu"; 
 
 function temayiGuncelle(havaDurumuKodu) {
-    // Tema sınıfları arka plan katmanına atanır
     const arkaPlanKatmani = document.getElementById('arkaPlanKatmani');
     
     // Eski sınıfları temizle
@@ -19,14 +18,16 @@ function temayiGuncelle(havaDurumuKodu) {
     } else if (havaDurumuKodu >= 600 && havaDurumuKodu <= 699) {
         arkaPlanKatmani.classList.add('hava-karlı');
     } else if (havaDurumuKodu >= 700 && havaDurumuKodu <= 800) {
+        // 800 (Açık) kodu Güneşli Temasına atanır
         arkaPlanKatmani.classList.add('hava-güneşli');
     } else if (havaDurumuKodu > 800) {
+        // 80x kodları Bulutlu Temasına atanır
         arkaPlanKatmani.classList.add('hava-bulutlu');
     }
     
-    // Hava durumu bilgisini saate ekle
+    // Hava durumu bilgisini saate ekle (sadece bir kere eklenir)
     const gosterge = document.getElementById('saatGostergeci');
-    if (gosterge) {
+    if (gosterge && !gosterge.innerText.includes(SEHIR_ADI)) {
         gosterge.innerText += ` | ${SEHIR_ADI}`;
     }
 }
@@ -45,7 +46,7 @@ function havaDurumuCekVeTemayiAyarla() {
         })
         .catch(error => {
             console.error("Hava durumu verisi çekilemedi. Varsayılan tema kullanılacak.");
-            // Hata durumunda varsayılan tema (pembe) kullanılır
+            // Hata durumunda, index.html'e eklediğimiz varsayılan tema (hava-güneşli) görünmeye devam eder.
         });
 }
 

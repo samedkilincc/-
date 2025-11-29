@@ -48,6 +48,7 @@ function guncelSaatiGoster() {
 
     const gosterge = document.getElementById('saatGostergeci');
     if (gosterge) {
+        // NOT: Şehir adı, tema_guncelleyici.js tarafından buraya eklenecektir.
         gosterge.innerText = `${gun} | ${saat}`;
     }
 }
