@@ -2,10 +2,12 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
-// LÜTFEN BAŞLANGIÇ TARİHİNİ KONTROL EDİN
-let startDate = new Date("2025-11-12"); 
+// BURAYA İLİŞKİNİZİN BAŞLADIĞI GÜN VE SAATİ YAZIN
+let startDate = new Date("2025-11-12 15:30:00"); 
 
-const DOGRU_SIFRE = "12112025";
+const DOGRU_SIFRE = "27012004";
+// ... (Kodun geri kalanı aynı kalır)
+const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
 
 // WEATHERAPI AYARLARI (Yeni anahtarınız buraya yerleştirildi)
