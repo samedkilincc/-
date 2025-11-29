@@ -6,9 +6,9 @@
 let startDate = new Date("2025-11-12"); 
 
 // API Anahtarı kaldırıldı.
-const DOGRU_SIFRE = "12112025";
+const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
-const MUZIK_DOSYA_ADI = "Neyleyim.mp3"; 
+const MUZIK_DOSYA_ADI = "Hüseyin Kemancı - AŞK.mp3"; 
 
 // Resim Yolları
 let photos = [
