@@ -100,7 +100,9 @@ button:hover {
     box-shadow: 0 0 20px rgba(255, 60, 165, 0.3);
 }
 
-/* YENİ SLAYT STİLLERİ */
+/* ... (Mevcut tüm CSS kodlarınızın üst kısmı) ... */
+
+/* YENİ SLAYT STİLLERİ (DÜZELTİLDİ) */
 .slayt-kapsayici {
     position: relative;
     width: 90%;
@@ -109,14 +111,16 @@ button:hover {
     overflow: hidden; 
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    height: 350px; 
+    height: 400px; /* Sabit Yüksekliği biraz artırdık (Resim görünümü için kritik) */
+    background-color: white; /* Resim yüklenirken arka planın beyaz kalması için */
 }
 
 .slayt-materyal {
     position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    /* DÜZELTME: Resmin tüm kutuyu kaplamasını sağla, deformasyon pahasına (cover) veya sığdır (contain) */
+    object-fit: contain; /* Resmin tamamını gösterir, boşluk kalırsa pembe değil beyaz görünür */
     opacity: 0; 
     transition: opacity 1.5s ease-in-out; 
 }
@@ -124,6 +128,7 @@ button:hover {
 .slayt-materyal.active {
     opacity: 1; 
 }
+
 
 /* Kalp Yağmuru Stili */
 #hearts {
