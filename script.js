@@ -2,37 +2,55 @@
 // SABİT DEĞİŞKENLER VE AYARLAR
 // =======================================================
 
-// İLİŞKİ BAŞLANGIÇ GÜN VE SAATİ: 12 Kasım 2025, 15:30
+// İLİŞKİ BAŞLANGIÇ SAATİ DÜZELTİLDİ: 12 Kasım 2025, 15:30:00
 let startDate = new Date("2025-11-12 15:30:00"); 
 
-const DOGRU_SIFRE = "12112025";
+const DOGRU_SIFRE = "27012004";
 const YAZI_HIZI = 40; 
 
-// WEATHERAPI AYARLARI: Anahtar, Netlify Ortam Değişkeninden çekilir
-const WEATHERAPI_KEY = process.env.WEATHERAPI_KEY; 
+// WEATHERAPI AYARLARI (Hava durumu mesajı için)
+const WEATHERAPI_KEY = "61f5c664edc0463abc591104252911"; 
 const SEHIR_ADI = "Kastamonu"; 
 
-// Resim Yolları
+// HİKAYE AKIŞI FOTOĞRAFLARI
 let photos = [
     "images/WhatsApp Görsel 2025-11-17 saat 23.30.49_e611421e.jpg",
     "images/WhatsApp Görsel 2025-11-12 saat 21.16.41_d90d8e5e.jpg",
     "images/WhatsApp Görsel 2025-11-24 saat 00.06.21_82137cff.jpg",
-    "images/WhatsApp Görsel 2025-11-17 saat 23.30.55_45c99fa5.jpg"
+    "images/WhatsApp Görsel 2025-11-17 saat 23.30.55_45c99fa5.jpg",
+    /* Yeni eklenecek fotoğraf buraya gelir (Örnek) */
+    "images/son_eklenen_fotograf.jpg" 
 ];
 
+// SADECE 'Seni Seviyorum' temalı mesajlar
 const askMesajlari = [
     "Seni Seviyorum ❤️", "Çok Seviyorum! ✨", "Sana Aşkım Sonsuz ♾️", 
     "Seni her şeyden çok seviyorum.", "Dünyamın en güzelisin! 💖", "I Love You! 🥰", 
     "Seninle Tamamlandım.", "Kalbimin Sahibi! 💘"
 ];
 
+// ELLE BÖLÜNMÜŞ METİN PARÇALARI
 let bolunmusMesajlar = [
     "Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın, belki de bu düşüncemi özgün bulmayıp beğenmeden sıkılıp bu ne böyle diyeceğin bir şeyle karşındayım.",
     "Belki bu fikir özgün değil kabul ediyorum ama şunu bilmeni istiyorum ki yazacağım bu yazıyı tamamen benliğimle yazıyorum. Evet bir şair değilim yazar değilim ki burada edebi güzellemeler yapıp hoşuna gidecek cümleleri yazayım.",
     "Ama ben Samed’im. Sana karşı içimde taşıdığım duyguları ifade edebilirim. Hayatıma girdiğinden beri o kadar enerji dolu, o kadar huzur dolu zamanlarım oldu ki halen de öyle. İnsan gerçekten sevmeli gerçekten de sevilmeliymiş. İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor.",
-    "Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. Her zaman, her anında yanında olmak istiyorum. Birlikte aşarız insanı olalım. İyi ki varsın, iyi ki benim sevgilimsin.❤️"
+    "Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. Her zaman, her anında yanında olmak istiyorum. Birlikte aşarız insanı olalım. İyi ki varsın, iyi ki benim sevgilimsin.❤️",
+    /* Yeni eklenecek metin buraya gelir (Örnek) */
+    "Bu, hikayemizin en yeni ve en güzel bölümü. Birlikte daha nice güzelliklere!"
 ];
 
+
+// YENİ SLAYT MATERYALLERİ
+const gezdigimizYerlerMateryalleri = [
+    { type: 'image', src: "images/IMG-20251128-WA0034.jpg" },
+    { type: 'image', src: "images/IMG-20251128-WA0035.jpg" },
+    { type: 'image', src: "images/IMG-20251128-WA0036.jpg" },
+    { type: 'image', src: "images/IMG-20251128-WA0037.jpg" },
+    { type: 'video', src: "images/VID-20251128-WA0006.mp4" }
+];
+
+let currentSlaytIndex = 0; 
+let slaytInterval; 
 
 let akisIndex = 0;
 const kapsayici = document.getElementById('ozelIcerikKapsayici');
@@ -43,12 +61,7 @@ const kapsayici = document.getElementById('ozelIcerikKapsayici');
 // =======================================================
 
 function havaDurumuMesajiGoster() {
-    // Anahtar, Netlify'dan çekilecek
-    if (!WEATHERAPI_KEY) { 
-        console.error("API Anahtarı bulunamadı. Lütfen Netlify'da ayarlayın.");
-        return; 
-    }
-    
+    // API Anahtarı Ortam Değişkeninden çekilecek
     const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${SEHIR_ADI}&lang=tr`;
     const mesajKapsayici = document.getElementById('havaDurumuMesaji');
 
@@ -59,11 +72,10 @@ function havaDurumuMesajiGoster() {
                 const durum = data.current.condition.text.toLowerCase();
                 let mesaj = "";
 
-                // Hava durumu mesajı mantığı
                 if (durum.includes("yağmur") || durum.includes("sağanak") || durum.includes("çise") || durum.includes("dolu")) {
                     mesaj = `☔ Bugün ${SEHIR_ADI}'da hava **yağmurlu**. Dışarı çıkarken yanına şemsiyeni ve içimi ısıtan gülümsemeni almayı unutma!`;
                 } else if (durum.includes("kar") || durum.includes("sulu kar")) {
-                    mesaj = `❄️ ${SEHIR_ADI}'ya **kar** yağıyor! Birlikteliğimizin en sıcak günü. Kombinini ona göre yap, soğuk almasın.`;
+                    mesaj = `❄️ ${SEHIR_ADI}'ya **kar** yağıyor! Kombinini ona göre yap, soğuk almasın.`;
                 } else if (durum.includes("sis") || durum.includes("duman") || durum.includes("pus")) {
                     mesaj = `🌫️ ${SEHIR_ADI}'da hava **sisli**. Unutma, nerede olursan ol, kalbimdeki yolun her zaman açık!`;
                 } else if (durum.includes("güneşli") || durum.includes("açık") || durum.includes("güneş")) {
@@ -124,10 +136,65 @@ function updateDetailedCounter() {
         ${pad(saat)} Saat, ${pad(dakika)} Dakika, ${pad(saniye)} Saniye
     `;
 
-    document.getElementById("counter").innerHTML = `
+    document.getElementById('counter').innerHTML = `
         Bugün birlikteliğimizin tam: <b><br>${output}</b> 💞
     `;
 }
+
+
+// =======================================================
+// YENİ SLAYT GÖSTERİSİ FONKSİYONLARI
+// =======================================================
+
+function initializeGezdigimizYerlerSlayt() {
+    const slaytKapsayici = document.getElementById('gezdigimizYerlerSlayt');
+    
+    gezdigimizYerlerMateryalleri.forEach((materyal, index) => {
+        let element;
+        if (materyal.type === 'image') {
+            element = document.createElement('img');
+            element.src = materyal.src;
+        } else if (materyal.type === 'video') {
+            element = document.createElement('video');
+            element.src = materyal.src;
+            element.controls = false;
+            element.loop = true;
+            element.muted = true;
+            element.autoplay = true; 
+        }
+
+        element.classList.add('slayt-materyal');
+        if (index === 0) element.classList.add('active'); 
+
+        slaytKapsayici.appendChild(element);
+    });
+
+    slaytInterval = setInterval(nextSlayt, 3500); // 3.5 saniyede bir slayt değiştir
+}
+
+function nextSlayt() {
+    const slaytlar = document.querySelectorAll('#gezdigimizYerlerSlayt .slayt-materyal');
+    if (slaytlar.length === 0) return;
+
+    // Aktif olanı bul ve gizle
+    slaytlar[currentSlaytIndex].classList.remove('active');
+
+    // Index'i bir sonraki materyale taşı
+    currentSlaytIndex = (currentSlaytIndex + 1) % slaytlar.length;
+
+    // Yeni aktif olanı göster
+    slaytlar[currentSlaytIndex].classList.add('active');
+
+    // Eğer aktif olan video ise, onu oynatmayı başlat (Tarayıcı izin verirse)
+    if (slaytlar[currentSlaytIndex].tagName === 'VIDEO') {
+        slaytlar[currentSlaytIndex].play();
+    }
+}
+
+
+// =======================================================
+// DİĞER FONKSİYONLAR
+// =======================================================
 
 function enterTusuDinleyicisi() {
     const sifreInput = document.getElementById('password');
@@ -194,7 +261,7 @@ function startHeartRain() {
         heart.innerText = "💗";
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.fontSize = (Math.random() * 20 + 15) + "px";
-        document.getElementById("hearts").appendChild(heart);
+        document.getElementById('hearts').appendChild(heart);
         setTimeout(() => heart.remove(), 4000);
     }, 300);
 }
@@ -205,18 +272,20 @@ function startHeartRain() {
 // =======================================================
 
 function check() {
-    let pass = document.getElementById("password").value;
+    let pass = document.getElementById('password').value;
 
     if(pass === DOGRU_SIFRE) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("content").classList.remove("hidden");
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('content').classList.remove('hidden');
 
-        // Tüm Özellikleri Başlat
-        document.getElementById("music").play();
+        // TÜM YENİ ÖZELLİKLER BURADAN BAŞLAR
         
-        // ÖNEMLİ: Hava Durumu Mesajı Gösteriliyor
+        // Slaytı Başlat
+        initializeGezdigimizYerlerSlayt();
+
+        // Diğer Özellikler
+        document.getElementById('music').play();
         havaDurumuMesajiGoster(); 
-        
         updateDetailedCounter();
         setInterval(updateDetailedCounter, 1000); 
         startHeartRain();
@@ -224,7 +293,7 @@ function check() {
         gosterIcerikAkisli();
         
     } else {
-        document.getElementById("wrong").innerText = "Yanlış şifre!";
+        document.getElementById('wrong').innerText = 'Yanlış şifre!';
     }
 }
 
