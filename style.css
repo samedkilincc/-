@@ -1,94 +1,56 @@
-body {
-    margin: 0;
-    font-family: 'Times New Roman', serif;
-    text-align: center;
-    color: #333;
-}
+body { margin: 0; font-family: 'Times New Roman', serif; text-align: center; color: #333; overflow-x: hidden; }
 
 #arkaPlanKatmani {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -2;
-    transition: background 3s ease;
-    background: linear-gradient(135deg, #ff9ec7, #ffd0e7); /* Varsayılan Pembe */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -2; transition: background 3s ease;
+    background: linear-gradient(135deg, #ff9ec7, #ffd0e7);
 }
 
 .hidden { display: none !important; }
 
-/* Giriş Kutusu */
 .box {
-    background: white;
-    width: 320px;
-    margin: 100px auto;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: white; width: 300px; margin: 100px auto; padding: 30px;
+    border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .ozel-baslik { color: #ff3c9d; margin-bottom: 20px; }
-.ozel-baslik span { color: #e74c3c; display: inline-block; animation: nabiz 1.5s infinite; }
-@keyframes nabiz { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+.ozel-baslik span { color: #e74c3c; display: inline-block; animation: kalpAtis 1.5s infinite; }
+@keyframes kalpAtis { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
 input { width: 85%; padding: 12px; border-radius: 10px; border: 1px solid #ff9ec7; margin-bottom: 15px; outline: none; }
 button { background: #ff3c9d; color: white; padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
-/* Üst Bilgi Kartları */
-.ust-bilgi-kapsayici { margin-top: 30px; }
-.hava-durumu-kart {
-    background: rgba(255, 255, 255, 0.7);
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 20px;
+.ust-panel { margin-top: 30px; padding: 10px; }
+#counter { font-size: 20px; color: #ff3c9d; line-height: 1.5; background: rgba(255,255,255,0.6); display: inline-block; padding: 10px 20px; border-radius: 15px; }
+
+.hava-kart {
+    background: rgba(255, 255, 255, 0.8);
+    display: inline-block; padding: 15px; border-radius: 20px;
+    font-weight: bold; color: #555; margin: 15px auto; max-width: 85%;
 }
 
-.donen-notlar {
-    font-size: 22px;
-    color: #ff3c9d;
-    font-weight: bold;
-    height: 40px;
-    margin: 20px 0;
-}
+.donen-not { font-size: 22px; color: #ff3c9d; font-weight: bold; height: 30px; margin: 25px 0; }
 
-/* Görsel ve Metin Akışı */
-.hikaye-resmi {
-    width: 90%;
-    max-width: 500px;
-    border-radius: 15px;
-    margin: 25px auto;
-    display: block;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-}
+.hikaye-resmi { width: 90%; max-width: 500px; border-radius: 15px; margin: 25px auto; display: block; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
 
 .hikaye-metni {
-    font-size: 20px;
-    line-height: 1.7;
-    color: #ff3c9d;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 25px;
-    border-radius: 20px;
-    max-width: 600px;
-    margin: 20px auto;
+    font-size: 19px; line-height: 1.7; color: #ff3c9d;
+    background: rgba(255, 255, 255, 0.9); padding: 25px;
+    border-radius: 20px; max-width: 600px; margin: 20px auto; text-align: left;
 }
 
-.kaydir-notu { color: #ff3c9d; font-weight: bold; margin-bottom: 150px; font-style: italic; }
+.kaydir-ipucu { color: #ff3c9d; font-weight: bold; margin-bottom: 100px; animation: yanSon 2s infinite; }
+@keyframes yanSon { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-/* Konfeti ve Balon Şöleni */
-.obj-celebrate {
-    position: fixed;
-    bottom: -100px;
-    z-index: 1000;
-    font-size: 40px;
-    animation: ucYukari 5s linear forwards;
+.celebrate-obj {
+    position: fixed; bottom: -100px; z-index: 1000;
+    font-size: 45px; animation: ucYukari 5s linear forwards;
 }
-
-@keyframes ucYukari {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+@keyframes ucYukari { 
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; } 
+    100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; } 
 }
 
 #hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
-.falling-heart { position: absolute; color: rgba(255, 182, 193, 0.7); animation: fallDown 5s linear infinite; }
-@keyframes fallDown { to { transform: translateY(105vh); } }
+.falling-heart { position: absolute; color: rgba(255, 182, 193, 0.6); animation: fall 5s linear infinite; }
+@keyframes fall { to { transform: translateY(105vh); } }

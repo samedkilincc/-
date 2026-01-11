@@ -1,14 +1,8 @@
-// AYARLAR
 const startDate = new Date("2025-11-12 15:30:00"); 
-const DOGRU_SIFRE = "27012025";
+const DOGRU_SIFRE = "27012004";
 const API_KEY = "61f5c664edc0463abc591104252911";
 
-const kisaNotlar = [
-    "Seni Seviyorum ❤️", 
-    "İyi ki hayatımdasın ✨", 
-    "Kalbimin tek sahibi 💘", 
-    "Dünyamın en güzeli 💖"
-];
+const notlar = ["Seni Seviyorum ❤️", "İyi ki hayatımdasın ✨", "Kalbimin sahibi 💘", "Her şeyim sensin 💖"];
 
 function check() {
     let pass = document.getElementById('password').value;
@@ -22,155 +16,133 @@ function check() {
     }
 }
 
-async function baslat() {
-    // 1. Sayaç ve Saat
-    setInterval(updateCounter, 1000);
+function baslat() {
+    setInterval(sayaciGuncelle, 1000);
+    havaVeArkaPlanGuncelle();
     
-    // 2. Hava Durumu ve Arka Plan
-    updateWeatherAndBG();
-
-    // 3. Dönen Notlar
-    let notIndex = 0;
-    const notEl = document.getElementById('askBulutu');
+    let nIdx = 0;
     setInterval(() => {
-        notEl.innerText = kisaNotlar[notIndex % kisaNotlar.length];
-        notIndex++;
+        document.getElementById('askBulutu').innerText = notlar[nIdx % notlar.length];
+        nIdx++;
     }, 3000);
 
-    // 4. İçerik Akışını İnşa Et
-    siraliIcerikOlustur();
-
-    // 5. Kalp Yağmuru
-    setInterval(createFallingHeart, 500);
-
-    // 6. Kaydırma Takibi (Sürpriz İçin)
-    window.addEventListener('scroll', checkScrollEnd);
+    icerikOlustur();
+    setInterval(kalpYagdir, 600);
+    window.addEventListener('scroll', surprizKontrol);
 }
 
-function updateCounter() {
-    let diff = new Date() - startDate;
-    let gun = Math.floor(diff / (1000 * 60 * 60 * 24));
-    document.getElementById('counter').innerHTML = `Birlikteliğimizin ${gun}. Günü ❤️`;
+function sayaciGuncelle() {
+    const diff = new Date() - startDate;
+    const gun = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const saat = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const dak = Math.floor((diff / (1000 * 60)) % 60);
+    const san = Math.floor((diff / 1000) % 60);
+    document.getElementById('counter').innerHTML = 
+        `Birlikteliğimizin <br> ${gun} gün, ${saat} saat, ${dak} dakika, ${san} saniyesi... ❤️`;
 }
 
-async function updateWeatherAndBG() {
+async function havaVeArkaPlanGuncelle() {
     try {
-        const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=Kastamonu&lang=tr`);
-        const data = await res.json();
-        const durum = data.current.condition.text;
-        const code = data.current.condition.code; // Hava durumu kodu
-        
-        document.getElementById('havaDurumuMesaji').innerText = `Kastamonu: ${durum} | ${data.current.temp_c}°C`;
+        const r = await fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=Kastamonu&lang=tr`);
+        const d = await r.json();
+        const durum = d.current.condition.text.toLowerCase();
+        const sicaklik = d.current.temp_c;
+        let anektot = "";
+
+        if (durum.includes("yağmur")) anektot = "☔ Hava yağmurlu... Şemsiyeni ve içimi yumuşatan o güzel gülüşünü almayı unutma sevgilim.";
+        else if (durum.includes("kar")) anektot = "❄️ Dışarıda kar var! Sıkı giyin, senin sıcaklığın bana yetse de sakın üşüme.";
+        else if (durum.includes("güneş")) anektot = "☀️ Hava güneşli ama benim gerçek güneşim sensin, bunu sakın unutma.";
+        else anektot = "☁️ Hava biraz kapalı, olsun... Bizim içimiz hep huzur dolu.";
+
+        document.getElementById('havaDurumuMesaji').innerText = `Kastamonu ${sicaklik}°C | ${anektot}`;
 
         const bg = document.getElementById('arkaPlanKatmani');
-        // Hava durumuna göre arka plan geçişleri
-        if (code === 1000) { // Güneşli
-            bg.style.background = "linear-gradient(135deg, #74ebd5, #acb6e5)";
-        } else if (durum.includes("yağmur") || durum.includes("sağanak")) {
-            bg.style.background = "linear-gradient(135deg, #606c88, #3f4c6b)";
-        } else if (durum.includes("bulut") || durum.includes("kapalı")) {
-            bg.style.background = "linear-gradient(135deg, #bdc3c7, #2c3e50)";
-        } else {
-            bg.style.background = "linear-gradient(135deg, #ff9ec7, #ffd0e7)";
-        }
-    } catch (e) { console.log("Hava durumu yüklenemedi."); }
+        if (durum.includes("güneş")) bg.style.background = "linear-gradient(135deg, #74ebd5, #acb6e5)";
+        else if (durum.includes("yağmur")) bg.style.background = "linear-gradient(135deg, #606c88, #3f4c6b)";
+        else bg.style.background = "linear-gradient(135deg, #ff9ec7, #ffd0e7)";
+    } catch (e) { document.getElementById('havaDurumuMesaji').innerText = "Hava durumuna bakamadım ama kalbim hep seninle!"; }
 }
 
-function siraliIcerikOlustur() {
-    const akisContainer = document.getElementById('hikayeAkisi');
-    const akisVerisi = [
-        { type: 'img', src: 'KHNP9943.JPG' },
-        { type: 'text', content: 'Hayatıma girdiğin o günden beri her şey o kadar anlamlı ki...' },
-        { type: 'img', src: 'URQC8638.JPG' },
-        { type: 'text', content: 'Gözlerine her baktığımda, doğru yerde olduğumu bir kez daha anlıyorum.' },
-        { type: 'img', src: 'GXDX6003.JPG' },
-        { type: 'text', content: 'Seninle geçen her saniye, ömrümün en değerli hazinesi.' },
-        { type: 'img', src: 'QTYJ9434.JPG' },
-        { type: 'text', content: 'Mesafeler olsa da kalbim hep seninle atıyor.' },
-        { type: 'img', src: 'RYIT9255.JPG' },
-        { type: 'img', src: 'UGTL1004.JPG' },
-        { type: 'title', content: 'Çiçeğim ve çiçekleri' },
-        { type: 'img', src: 'URCA7427.JPG' },
-        { type: 'img', src: 'OUTP4409.JPG' },
-        { type: 'img', src: 'ATJO2520.JPG' },
-        { type: 'text', content: 'Seninle yaptığım, gezdiğim, yediğim, içtiğim her şey benim için dünyanın en değerli ve en güzel şeyleri.' },
-        { type: 'img', src: 'ORBD1779.JPG' },
-        { type: 'img', src: 'FLOQ7231.JPG' },
-        { type: 'img', src: 'IMG-20251128-WA0034.jpg' },
-        { type: 'img', src: 'IMG-20251128-WA0035.jpg' },
-        { type: 'img', src: 'IMG-20251128-WA0036.jpg' },
-        { type: 'img', src: 'IMG-20251128-WA0037.jpg' },
-        { type: 'img', src: 'UGTL1004.JPG' },
-        { type: 'img', src: 'LVVL1378.JPG' },
-        { type: 'img', src: 'IMG_6415.HEIC' }
+function icerikOlustur() {
+    const ana = document.getElementById('anaAkis');
+    const veriler = [
+        { t: 'img', s: 'KHNP9943.JPG' },
+        { t: 'txt', c: 'Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın, belki de bu düşüncemi özgün bulmayıp beğenmeden sıkılıp bu ne böyle diyeceğin bir şeyle karşındayım.' },
+        { t: 'img', s: 'URQC8638.JPG' },
+        { t: 'txt', c: 'Belki bu fikir özgün değil kabul ediyorum ama şunu bilmeni istiyorum ki yazacağım bu yazıyı tamamen benliğimle yazıyorum. Evet bir şair değilim yazar değilim ki burada edebi güzellemeler yapıp hoşuna gidecek cümleleri yazayım.' },
+        { t: 'img', s: 'GXDX6003.JPG' },
+        { t: 'txt', c: 'Ama ben Samed’im. Sana karşı içimde taşıdığım duyguları ifade edebilirim. Hayatıma girdiğinden beri o kadar enerji dolu, o kadar huzur dolu zamanlarım oldu ki halen de öyle. İnsan gerçekten sevmeli gerçekten de sevilmeliymiş.' },
+        { t: 'img', s: 'QTYJ9434.JPG' },
+        { t: 'txt', c: 'İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor. Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. Her zaman, her anında yanında olmak istiyorum. Birlikte aşarız insanı olalım. İyi ki varsın, iyi ki benim sevgilimsin.❤️' },
+        { t: 'img', s: 'RYIT9255.JPG' },
+        { t: 'img', s: 'UGTL1004.JPG' },
+        { t: 'head', c: 'Çiçeğim ve çiçekleri' },
+        { t: 'img', s: 'URCA7427.JPG' },
+        { t: 'img', s: 'OUTP4409.JPG' },
+        { t: 'img', s: 'ATJO2520.JPG' },
+        { t: 'txt', c: 'Seninle yaptığım, gezdiğim, yediğim, içtiğim her şey benim için dünyanın en değerli ve en güzel şeyleri.' },
+        { t: 'img', s: 'ORBD1779.JPG' },
+        { t: 'img', s: 'FLOQ7231.JPG' },
+        { t: 'img', s: 'IMG-20251128-WA0034.jpg' },
+        { t: 'img', s: 'IMG-20251128-WA0035.jpg' },
+        { t: 'img', s: 'IMG-20251128-WA0036.jpg' },
+        { t: 'img', s: 'IMG-20251128-WA0037.jpg' },
+        { t: 'img', s: 'UGTL1004.JPG' },
+        { t: 'img', s: 'LVVL1378.JPG' },
+        { t: 'img', s: 'IMG_6415.HEIC' }
     ];
 
-    akisVerisi.forEach(item => {
+    veriler.forEach(item => {
         let el;
-        if (item.type === 'img') {
+        if (item.t === 'img') {
             el = document.createElement('img');
-            el.src = `images/${item.src}`;
+            el.src = `images/${item.s}`;
             el.className = 'hikaye-resmi';
-        } else if (item.type === 'text') {
+        } else if (item.t === 'txt') {
             el = document.createElement('div');
             el.className = 'hikaye-metni';
-            el.innerText = item.content;
-        } else if (item.type === 'title') {
+            el.innerText = item.c;
+        } else if (item.t === 'head') {
             el = document.createElement('h2');
             el.className = 'hikaye-metni';
             el.style.textAlign = 'center';
-            el.style.fontSize = '28px';
-            el.style.fontWeight = 'bold';
-            el.innerText = item.content;
+            el.style.fontSize = '26px';
+            el.innerText = item.c;
         }
-        akisContainer.appendChild(el);
+        ana.appendChild(el);
     });
 }
 
-// SÜRPRİZ: KONFETİ VE BALON ŞÖLENİ
-let surpriseDone = false;
-function checkScrollEnd() {
-    const trigger = document.getElementById('sayfaSonuTetikleyici');
-    const triggerPos = trigger.getBoundingClientRect().top;
-    
-    if (!surpriseDone && triggerPos < window.innerHeight) {
-        surpriseDone = true;
-        launchCelebration();
+let done = false;
+function surprizKontrol() {
+    const bitis = document.getElementById('bitisNoktasi');
+    if (!done && bitis.getBoundingClientRect().top < window.innerHeight) {
+        done = true;
+        showCelebration();
     }
 }
 
-function launchCelebration() {
-    const container = document.getElementById('celebrationContainer');
+function showCelebration() {
+    const c = document.getElementById('kutlamaAlani');
     const icons = ['🎈', '🎉', '🎊', '❤️', '💖', '🌸', '✨', '🎈'];
-    
-    let end = Date.now() + 5000; // 5 saniye sürer
-
-    let interval = setInterval(() => {
-        if (Date.now() > end) {
-            clearInterval(interval);
-            return;
-        }
-
-        const obj = document.createElement('div');
-        obj.className = 'obj-celebrate';
-        obj.innerText = icons[Math.floor(Math.random() * icons.length)];
-        obj.style.left = Math.random() * 100 + "vw";
-        // Rastgele hız ve boyut
-        obj.style.animationDuration = (Math.random() * 2 + 3) + "s";
-        container.appendChild(obj);
-
-        // Temizlik
-        setTimeout(() => obj.remove(), 5000);
+    let end = Date.now() + 5000;
+    let timer = setInterval(() => {
+        if (Date.now() > end) { clearInterval(timer); return; }
+        const div = document.createElement('div');
+        div.className = 'celebrate-obj';
+        div.innerText = icons[Math.floor(Math.random() * icons.length)];
+        div.style.left = Math.random() * 100 + "vw";
+        div.style.animationDuration = (Math.random() * 2 + 3) + "s";
+        c.appendChild(div);
+        setTimeout(() => div.remove(), 5000);
     }, 100);
 }
 
-function createFallingHeart() {
+function kalpYagdir() {
     const h = document.createElement("div");
-    h.className = "falling-heart";
-    h.innerText = "💗";
+    h.className = "falling-heart"; h.innerText = "💗";
     h.style.left = Math.random() * 100 + "vw";
     h.style.fontSize = (Math.random() * 20 + 10) + "px";
-    h.style.opacity = Math.random();
     document.getElementById('hearts').appendChild(h);
     setTimeout(() => h.remove(), 5000);
 }
