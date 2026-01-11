@@ -2,55 +2,54 @@ body { margin: 0; font-family: 'Times New Roman', serif; text-align: center; col
 
 #arkaPlanKatmani {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -2; transition: background 3s ease;
-    background: linear-gradient(135deg, #ff9ec7, #ffd0e7);
+    z-index: -2; transition: all 2s ease;
 }
+
+/* Gece/Gündüz Temaları */
+.tema-gece { background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); color: #fff !important; }
+.tema-gunduz { background: linear-gradient(to bottom, #74ebd5, #acb6e5); }
+.tema-yagmurlu { background: linear-gradient(to bottom, #606c88, #3f4c6b); }
 
 .hidden { display: none !important; }
-
-.box {
-    background: white; width: 300px; margin: 100px auto; padding: 30px;
-    border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
+.box { background: white; width: 300px; margin: 100px auto; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 
 .ozel-baslik { color: #ff3c9d; margin-bottom: 20px; }
 .ozel-baslik span { color: #e74c3c; display: inline-block; animation: kalpAtis 1.5s infinite; }
 @keyframes kalpAtis { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-input { width: 85%; padding: 12px; border-radius: 10px; border: 1px solid #ff9ec7; margin-bottom: 15px; outline: none; }
+input { width: 85%; padding: 12px; border-radius: 10px; border: 1px solid #ff9ec7; margin-bottom: 15px; }
 button { background: #ff3c9d; color: white; padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
-.ust-panel { margin-top: 30px; padding: 10px; }
-#counter { font-size: 20px; color: #ff3c9d; line-height: 1.5; background: rgba(255,255,255,0.6); display: inline-block; padding: 10px 20px; border-radius: 15px; }
+.ust-panel { margin-top: 20px; }
+.sayac-kutu { 
+    font-size: 22px; color: #ff3c9d; background: rgba(255,255,255,0.9); 
+    padding: 20px; border-radius: 20px; display: inline-block; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-weight: bold;
+}
 
 .hava-kart {
-    background: rgba(255, 255, 255, 0.8);
-    display: inline-block; padding: 15px; border-radius: 20px;
-    font-weight: bold; color: #555; margin: 15px auto; max-width: 85%;
+    background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 20px;
+    font-weight: bold; color: #444; margin: 15px auto; max-width: 85%;
+    border: 2px solid #ff9ec7;
 }
 
-.donen-not { font-size: 22px; color: #ff3c9d; font-weight: bold; height: 30px; margin: 25px 0; }
+.donen-not { font-size: 24px; color: #ff3c9d; font-weight: bold; margin: 30px 0; text-shadow: 1px 1px 2px #fff; }
 
-.hikaye-resmi { width: 90%; max-width: 500px; border-radius: 15px; margin: 25px auto; display: block; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
-
-.hikaye-metni {
-    font-size: 19px; line-height: 1.7; color: #ff3c9d;
-    background: rgba(255, 255, 255, 0.9); padding: 25px;
-    border-radius: 20px; max-width: 600px; margin: 20px auto; text-align: left;
+.hikaye-resmi { width: 90%; max-width: 500px; border-radius: 15px; margin: 25px auto; display: block; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+.hikaye-metni { 
+    font-size: 19px; line-height: 1.8; color: #ff3c9d; background: white; 
+    padding: 30px; border-radius: 25px; max-width: 600px; margin: 25px auto; text-align: left;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.kaydir-ipucu { color: #ff3c9d; font-weight: bold; margin-bottom: 100px; animation: yanSon 2s infinite; }
-@keyframes yanSon { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
+/* Coşkulu Konfeti Animasyonu */
 .celebrate-obj {
-    position: fixed; bottom: -100px; z-index: 1000;
-    font-size: 45px; animation: ucYukari 5s linear forwards;
-}
-@keyframes ucYukari { 
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; } 
-    100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; } 
+    position: fixed; bottom: -100px; z-index: 2000;
+    animation: patla 4s ease-out forwards;
 }
 
-#hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
-.falling-heart { position: absolute; color: rgba(255, 182, 193, 0.6); animation: fall 5s linear infinite; }
-@keyframes fall { to { transform: translateY(105vh); } }
+@keyframes patla {
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-130vh) scale(1.5) rotate(1080deg); opacity: 0; }
+}
