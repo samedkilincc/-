@@ -10,31 +10,30 @@ body { margin: 0; font-family: 'Times New Roman', serif; text-align: center; col
 .tema-gunduz { background: linear-gradient(to bottom, #74ebd5, #acb6e5) !important; }
 
 .hidden { display: none !important; }
-.box { background: white; width: 300px; margin: 100px auto; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.box { background: white; width: 300px; margin: 100px auto; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; z-index: 10; }
 
 .ozel-baslik { color: #ff3c9d; margin-bottom: 20px; }
 .ozel-baslik span { color: #e74c3c; display: inline-block; animation: kalpAtis 1.5s infinite; }
 @keyframes kalpAtis { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-input { width: 85%; padding: 12px; border-radius: 10px; border: 1px solid #ff9ec7; margin-bottom: 15px; }
+input { width: 85%; padding: 12px; border-radius: 10px; border: 1px solid #ff9ec7; margin-bottom: 15px; outline: none; }
 button { background: #ff3c9d; color: white; padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
-.floating-heart {
-    position: fixed; bottom: -50px; color: #ff3c9d; opacity: 0.6;
-    animation: floatUp 6s linear forwards; z-index: -1;
-}
+.floating-heart { position: fixed; bottom: -50px; color: #ff3c9d; opacity: 0.6; animation: floatUp 6s linear forwards; z-index: -1; }
 @keyframes floatUp { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
 
-.sayac-kutu { 
-    font-size: 20px; color: #ff3c9d; background: rgba(255,255,255,0.9); 
-    padding: 20px; border-radius: 20px; display: inline-block; font-weight: bold; margin-top: 20px;
-}
-
-.hava-kart { background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 20px; font-weight: bold; margin: 15px auto; max-width: 85%; }
+.sayac-kutu { font-size: 20px; color: #ff3c9d; background: rgba(255,255,255,0.9); padding: 20px; border-radius: 20px; display: inline-block; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.hava-kart { background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 20px; font-weight: bold; color: #444; margin: 15px auto; max-width: 85%; }
 .donen-not { font-size: 24px; color: #ff3c9d; font-weight: bold; margin: 30px 0; }
-.hikaye-resmi { width: 90%; max-width: 500px; border-radius: 15px; margin: 25px auto; display: block; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
-.hikaye-metni { font-size: 19px; line-height: 1.8; color: #ff3c9d; background: white; padding: 25px; border-radius: 20px; max-width: 600px; margin: 25px auto; text-align: left; }
 
-.obj-celebrate { position: fixed; bottom: -100px; z-index: 2000; animation: patla 4s ease-out forwards; }
-@keyframes patla { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-130vh) rotate(720deg); opacity: 0; } }
-.kaydir-ipucu { color: #ff3c9d; font-weight: bold; margin-bottom: 100px; }
+.hikaye-resmi { width: 95%; max-width: 500px; border-radius: 15px; margin: 25px auto; display: block; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+.hikaye-metni { font-size: 19px; line-height: 1.8; color: #ff3c9d; background: white; padding: 25px; border-radius: 20px; max-width: 600px; margin: 25px auto; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+/* CAFCAFLI KONFETİ */
+.confetti { position: fixed; bottom: -50px; z-index: 9999; animation: fireUp 5s ease-out forwards; }
+@keyframes fireUp {
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    25% { transform: translateX(20px); }
+    50% { transform: translateX(-20px); opacity: 1; }
+    100% { transform: translateY(-130vh) scale(1.5) rotate(1080deg); opacity: 0; }
+}

@@ -2,9 +2,8 @@ const startDate = new Date("2025-11-12 15:30:00");
 const DOGRU_SIFRE = "27012004";
 const API_KEY = "61f5c664edc0463abc591104252911";
 
-const iltifatlar = ["Seni Seviyorum ❤️", "Gülüşüne hayranım ✨", "İyi ki varsın 💘", "Kalbimin tek sahibi 💖"];
+const iltifatlar = ["Seni Seviyorum ❤️", "Gülüşüne hayranım ✨", "Kalbimin tek sahibi 💘", "İyi ki varsın sevgilim 💖"];
 
-// Giriş ekranında kalpler
 const heartInterval = setInterval(() => {
     const h = document.createElement("div");
     h.className = "floating-heart";
@@ -22,7 +21,7 @@ function check() {
         document.getElementById('floatingHearts').innerHTML = "";
         document.getElementById('login').style.display = 'none';
         document.getElementById('content').classList.remove('hidden');
-        document.getElementById('music').play().catch(e => console.log("Müzik otomatik başlatılamadı"));
+        document.getElementById('music').play().catch(e => console.log("Müzik için etkileşim bekliyor."));
         initApp();
     } else {
         document.getElementById('wrong').innerText = 'Yanlış şifre sevgilim!';
@@ -33,17 +32,14 @@ function initApp() {
     setInterval(updateCounter, 1000);
     const hour = new Date().getHours();
     document.getElementById('arkaPlanKatmani').className = (hour >= 19 || hour < 6) ? "tema-gece" : "tema-gunduz";
-    
     updateWeather();
-    
     let i = 0;
     setInterval(() => {
         document.getElementById('askBulutu').innerText = iltifatlar[i % iltifatlar.length];
         i++;
     }, 4000);
-
     buildStory();
-    window.addEventListener('scroll', checkFinal);
+    window.addEventListener('scroll', checkFinalSurprise);
 }
 
 function updateCounter() {
@@ -52,7 +48,7 @@ function updateCounter() {
     const saat = Math.floor((diff % 86400000) / 3600000);
     const dak = Math.floor((diff % 3600000) / 60000);
     const san = Math.floor((diff % 60000) / 1000);
-    document.getElementById('counter').innerHTML = `Birlikteliğimizin <br> ${gun} Gün, ${saat} Saat, ${dak} Dakika, ${san} Saniye... ❤️`;
+    document.getElementById('counter').innerHTML = `${gun} Gün, ${saat} Saat, ${dak} Dakika, ${san} Saniye... ❤️`;
 }
 
 async function updateWeather() {
@@ -61,8 +57,8 @@ async function updateWeather() {
         const d = await r.json();
         const durum = d.current.condition.text.toLowerCase();
         let anektot = "Hava kapalı olsa da bizim kalbimiz hep aydınlık.";
-        if (durum.includes("yağmur")) anektot = "☔ Kastamonu yağmurlu sevgilim... Şemsiyeni ve o güzel gülüşünü yanına almayı unutma.";
-        else if (durum.includes("kar")) anektot = "❄️ Kar yağıyor! Sıkı giyin, sakın üşüme.";
+        if (durum.includes("yağmur")) anektot = "☔ Kastamonu yağmurlu... Şemsiyeni ve o güzel gülüşünü yanına almayı unutma.";
+        else if (durum.includes("kar")) anektot = "❄️ Kar yağıyor! Senin sıcaklığın bana yetse de sakın üşüme.";
         else if (durum.includes("güneş") || durum.includes("açık")) anektot = "☀️ Hava pırıl pırıl, ama benim asıl güneşim sensin.";
         document.getElementById('havaDurumuMesaji').innerText = `Kastamonu ${d.current.temp_c}°C | ${anektot}`;
     } catch (e) { document.getElementById('havaDurumuMesaji').innerText = "Kalbimiz hep 25 derece sevgilim! ❤️"; }
@@ -78,20 +74,23 @@ function buildStory() {
         { t: 'img', s: 'GXDX6003.JPG' },
         { t: 'txt', c: 'Ama ben Samed’im. Sana karşı içimde taşıdığım duyguları ifade edebilirim. Hayatıma girdiğinden beri o kadar enerji dolu, o kadar huzur dolu zamanlarım oldu ki halen de öyle. İnsan gerçekten sevmeli gerçekten de sevilmeliymiş.' },
         { t: 'img', s: 'QTYJ9434.JPG' },
-        { t: 'txt', c: 'İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor. Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum.' },
+        { t: 'txt', c: 'İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor. Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum. ❤️' },
         { t: 'img', s: 'RYIT9255.JPG' },
         { t: 'img', s: 'UGTL1004.JPG' },
         { t: 'head', c: 'Çiçeğim ve çiçekleri' },
         { t: 'img', s: 'URCA7427.JPG' },
         { t: 'img', s: 'OUTP4409.JPG' },
         { t: 'img', s: 'ATJO2520.JPG' },
+        { t: 'txt', c: 'Seninle yaptığım, gezdiğim, yediğim, içtiğim her şey benim için dünyanın en değerli ve en güzel şeyleri.' },
         { t: 'img', s: 'ORBD1779.JPG' },
         { t: 'img', s: 'FLOQ7231.JPG' },
         { t: 'img', s: 'IMG-20251128-WA0034.jpg' },
         { t: 'img', s: 'IMG-20251128-WA0035.jpg' },
         { t: 'img', s: 'IMG-20251128-WA0036.jpg' },
         { t: 'img', s: 'IMG-20251128-WA0037.jpg' },
-        { t: 'img', s: 'LVVL1378.JPG' }
+        { t: 'img', s: 'UGTL1004.JPG' },
+        { t: 'img', s: 'LVVL1378.JPG' },
+        { t: 'img', s: 'IMG_6415.HEIC' }
     ];
     story.forEach(item => {
         let el;
@@ -102,23 +101,24 @@ function buildStory() {
     });
 }
 
-let surpriseTriggered = false;
-function checkFinal() {
-    const trigger = document.getElementById('bitisNoktasi');
-    if (!surpriseTriggered && trigger.getBoundingClientRect().top < window.innerHeight) {
-        surpriseTriggered = true;
+let surpriseActive = false;
+function checkFinalSurprise() {
+    const bitis = document.getElementById('bitisNoktasi');
+    if (!surpriseActive && bitis.getBoundingClientRect().top < window.innerHeight) {
+        surpriseActive = true;
         const c = document.getElementById('celebrationContainer');
-        const icons = ['🎈', '🎉', '❤️', '💖', '✨', '🌸'];
-        let end = Date.now() + 6000;
+        const items = ['🎈', '🎉', '🎊', '❤️', '💖', '✨', '🌸', '🌹', '🦋', '🍭'];
+        let end = Date.now() + 5000;
         let timer = setInterval(() => {
             if (Date.now() > end) { clearInterval(timer); return; }
             const div = document.createElement('div');
-            div.className = 'obj-celebrate';
-            div.innerText = icons[Math.floor(Math.random() * icons.length)];
+            div.className = 'confetti';
+            div.innerText = items[Math.floor(Math.random() * items.length)];
             div.style.left = Math.random() * 100 + "vw";
-            div.style.animationDuration = (Math.random() * 2 + 2) + "s";
+            div.style.fontSize = (Math.random() * 30 + 20) + "px";
+            div.style.animationDuration = (Math.random() * 2 + 1) + "s";
             c.appendChild(div);
             setTimeout(() => div.remove(), 5000);
-        }, 60);
+        }, 40); // 40ms hızında patlama (Baya cafcaflı)
     }
 }
