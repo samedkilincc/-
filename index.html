@@ -8,13 +8,10 @@
 </head>
 <body>
     <div id="arkaPlanKatmani"></div> 
-    <div id="hearts"></div>
-    <div id="kutlamaAlani"></div>
-    
-    <audio id="music" src="Hüseyin Kemancı - AŞK.mp3" loop></audio> 
+    <div id="floatingHearts"></div> <div id="celebrationContainer"></div> <audio id="music" src="Hüseyin Kemancı - AŞK.mp3" loop></audio> 
 
     <div id="login" class="box">
-        <h1 class="ozel-baslik"> <span>❤️</span> </h1> 
+        <h1 class="ozel-baslik"><span>❤️</span></h1> 
         <h3>Şifreyi gir sevgilim 💕</h3>
         <input type="password" id="password" placeholder="Şifre..." onkeydown="if(event.keyCode==13) check()">
         <button onclick="check()">Giriş</button> 
@@ -24,7 +21,7 @@
     <div id="content" class="hidden">
         <div class="ust-panel">
             <div id="counter" class="sayac-kutu"></div>
-            <div id="havaDurumuMesaji" class="hava-kart">Hava durumu kontrol ediliyor...</div>
+            <div id="havaDurumuMesaji" class="hava-kart">Hava durumu yükleniyor...</div>
         </div>
         
         <div id="askBulutu" class="donen-not"></div>
@@ -39,6 +36,7 @@
         </div>
         <div id="bitisNoktasi" style="height: 50px;"></div>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>

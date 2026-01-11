@@ -2,29 +2,38 @@ const startDate = new Date("2025-11-12 15:30:00");
 const DOGRU_SIFRE = "27012004";
 const API_KEY = "61f5c664edc0463abc591104252911";
 
-const iltifatlar = [
-    "Dünyanın en güzel gülüşüne sahipsin sevgilim ✨",
-    "Seninle geçen her saniye bir ömre bedel ❤️",
-    "Gözlerin benim en huzurlu limanım ⚓",
-    "İyi ki varsın, iyi ki benimlesin Hatice'm 💖",
-    "Kalbimin her atışı senin ismini fısıldıyor 💘"
-];
+const iltifatlar = ["Seni Seviyorum ❤️", "Gülüşüne hayranım ✨", "İyi ki hayatımdasın 💘", "Kalbimin tek sahibi 💖, "En değerlim😘"];
+
+// Giriş sayfasında yükselen kalpler
+function createFloatingHeart() {
+    const h = document.createElement("div");
+    h.className = "floating-heart";
+    h.innerText = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = (Math.random() * 20 + 20) + "px";
+    document.getElementById('floatingHearts').appendChild(h);
+    setTimeout(() => h.remove(), 6000);
+}
+let heartInterval = setInterval(createFloatingHeart, 400);
 
 function check() {
     let pass = document.getElementById('password').value;
     if(pass === DOGRU_SIFRE) {
+        clearInterval(heartInterval); // Girişten sonra yükselen kalpleri durdur
+        document.getElementById('floatingHearts').innerHTML = "";
         document.getElementById('login').style.display = 'none';
         document.getElementById('content').classList.remove('hidden');
         document.getElementById('music').play();
-        baslat();
+        init();
     } else {
         document.getElementById('wrong').innerText = 'Yanlış şifre sevgilim!';
     }
 }
 
-function baslat() {
-    setInterval(detayliSayacGuncelle, 1000);
-    havaVeTemaGuncelle();
+function init() {
+    setInterval(updateCounter, 1000);
+    applyDayNightTheme(); // Tema kontrolü
+    updateWeather();
     
     let i = 0;
     setInterval(() => {
@@ -32,71 +41,60 @@ function baslat() {
         i++;
     }, 4000);
 
-    akisOlustur();
-    window.addEventListener('scroll', surprizKontrol);
+    buildStory();
+    window.addEventListener('scroll', checkSurprise);
 }
 
-function detayliSayacGuncelle() {
-    const simdi = new Date();
-    const fark = simdi - startDate;
-
-    const yil = Math.floor(fark / (1000 * 60 * 60 * 24 * 365));
-    const gun = Math.floor((fark / (1000 * 60 * 60 * 24)) % 365);
-    const saat = Math.floor((fark / (1000 * 60 * 60)) % 24);
-    const dak = Math.floor((fark / (1000 * 60)) % 60);
-    const san = Math.floor((fark / 1000) % 60);
-
+function updateCounter() {
+    const diff = new Date() - startDate;
+    const gun = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const saat = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const dak = Math.floor((diff / (1000 * 60)) % 60);
+    const san = Math.floor((diff / 1000) % 60);
     document.getElementById('counter').innerHTML = 
-        `Birlikteliğimizin <br> <span style="font-size:30px">${gun}</span> Gün, ${saat} Saat, ${dak} Dakika, ${san} Saniye... ❤️`;
+        `Birlikteliğimizin <br> ${gun} Gün, ${saat} Saat, ${dak} Dakika, ${san} Saniye... ❤️`;
 }
 
-async function havaVeTemaGuncelle() {
+function applyDayNightTheme() {
     const bg = document.getElementById('arkaPlanKatmani');
-    const saat = new Date().getHours();
-    
-    // Önce Gece/Gündüz Kontrolü
-    if(saat >= 20 || saat <= 6) bg.className = "tema-gece";
+    const hour = new Date().getHours();
+    if(hour >= 19 || hour < 6) bg.className = "tema-gece";
     else bg.className = "tema-gunduz";
+}
 
+async function updateWeather() {
     try {
         const r = await fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=Kastamonu&lang=tr`);
         const d = await r.json();
         const durum = d.current.condition.text.toLowerCase();
-        let anektot = "";
+        let anektot = "Hava biraz kapalı ama bizim kalbimiz hep aydınlık sevgilim.";
 
-        if (durum.includes("yağmur")) {
-            anektot = "☔ Kastamonu yağmurlu sevgilim... Şemsiyeni ve içimi ısıtan o güzel gülüşünü yanına almayı unutma.";
-            bg.className = "tema-yagmurlu";
-        } else if (durum.includes("kar")) {
-            anektot = "❄️ Kar yağıyor! Senin sıcaklığın bana yetse de sakın üşüme, sıkı giyin.";
-        } else if (durum.includes("güneş")) {
-            anektot = "☀️ Hava pırıl pırıl güneşli, ama benim asıl güneşim sensin.";
-        } else {
-            anektot = "☁️ Hava biraz kapalı ama bizim kalbimiz hep aydınlık sevgilim.";
-        }
+        if (durum.includes("yağmur")) anektot = "☔ Kastamonu yağmurlu sevgilim... Şemsiyeni ve içimi ısıtan o güzel gülüşünü yanına almayı unutma.";
+        else if (durum.includes("kar")) anektot = "❄️ Dışarıda kar var! Senin sıcaklığın bana yetse de sakın üşüme, sıkı giyin.";
+        else if (durum.includes("güneş") || durum.includes("açık")) anektot = "☀️ Hava pırıl pırıl, ama benim asıl güneşim sensin.";
 
         document.getElementById('havaDurumuMesaji').innerText = `Kastamonu ${d.current.temp_c}°C | ${anektot}`;
     } catch (e) { document.getElementById('havaDurumuMesaji').innerText = "Hava durumuna bakamadım ama kalbim hep seninle!"; }
 }
 
-function akisOlustur() {
-    const ana = document.getElementById('anaAkis');
-    const veriler = [
+function buildStory() {
+    const container = document.getElementById('anaAkis');
+    const story = [
         { t: 'img', s: 'KHNP9943.JPG' },
-        { t: 'txt', c: 'Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın bir sürprizle karşındayım.' },
+        { t: 'txt', c: 'Evet yine senin için yaptığım, emek harcadığım, belki beğenip çok mutlu olacağın, belki de bu düşüncemi özgün bulmayıp beğenmeden sıkılıp bu ne böyle diyeceğin bir şeyle karşındayım.' },
         { t: 'img', s: 'URQC8638.JPG' },
-        { t: 'txt', c: 'Belki bu fikir özgün değil ama yazacağım her kelime tamamen benim içimden geliyor.' },
+        { t: 'txt', c: 'Belki bu fikir özgün değil kabul ediyorum ama şunu bilmeni istiyorum ki yazacağım bu yazıyı tamamen benliğimle yazıyorum. Evet bir şair değilim yazar değilim ki burada edebi güzellemeler yapıp hoşuna gidecek cümleleri yazayım.' },
         { t: 'img', s: 'GXDX6003.JPG' },
-        { t: 'txt', c: 'Sana karşı taşıdığım duygular o kadar enerji ve huzur dolu ki, bunu her saniye hissediyorum.' },
+        { t: 'txt', c: 'Ama ben Samed’im. Sana karşı içimde taşıdığım duyguları ifade edebilirim. Hayatıma girdiğinden beri o kadar enerji dolu, o kadar huzur dolu zamanlarım oldu ki halen de öyle. İnsan gerçekten sevmeli gerçekten de sevilmeliymiş.' },
         { t: 'img', s: 'QTYJ9434.JPG' },
-        { t: 'txt', c: 'Seninle yaşadığım her ilk, kalbimde ayrı bir heyecan yaratıyor Hatice’m. Seni çok seviyorum.' },
+        { t: 'txt', c: 'İlk defa yaşadığım bir durum bu. Bunun için sana minnettarım. Hayatında ilkleri yaşayınca insanı ayrı bir heyecan kaplıyor. Bu heyecanım hep ilk günkü gibi ve hep de öyle kalacak. Aynı sana olan sevgim gibi. Seni her şeyden çok seviyorum.' },
         { t: 'img', s: 'RYIT9255.JPG' },
         { t: 'img', s: 'UGTL1004.JPG' },
         { t: 'head', c: 'Çiçeğim ve çiçekleri' },
         { t: 'img', s: 'URCA7427.JPG' },
         { t: 'img', s: 'OUTP4409.JPG' },
         { t: 'img', s: 'ATJO2520.JPG' },
-        { t: 'txt', c: 'Seninle yediğim, içtiğim, gezdiğim her şey dünyanın en değerli şeyi benim için.' },
+        { t: 'head', c: 'Seninle Her Şey Değerli' },
         { t: 'img', s: 'ORBD1779.JPG' },
         { t: 'img', s: 'FLOQ7231.JPG' },
         { t: 'img', s: 'IMG-20251128-WA0034.jpg' },
@@ -107,7 +105,7 @@ function akisOlustur() {
         { t: 'img', s: 'IMG_6415.HEIC' }
     ];
 
-    veriler.forEach(item => {
+    story.forEach(item => {
         let el;
         if (item.t === 'img') {
             el = document.createElement('img');
@@ -123,34 +121,31 @@ function akisOlustur() {
             el.style.textAlign = 'center';
             el.innerText = item.c;
         }
-        ana.appendChild(el);
+        container.appendChild(el);
     });
 }
 
-let done = false;
-function surprizKontrol() {
-    const bitis = document.getElementById('bitisNoktasi');
-    if (!done && bitis.getBoundingClientRect().top < window.innerHeight) {
-        done = true;
-        coskuluKutlama();
+let surpriseTriggered = false;
+function checkSurprise() {
+    const trigger = document.getElementById('bitisNoktasi');
+    if (!surpriseTriggered && trigger.getBoundingClientRect().top < window.innerHeight) {
+        surpriseTriggered = true;
+        launchCelebration();
     }
 }
 
-function coskuluKutlama() {
-    const c = document.getElementById('kutlamaAlani');
-    const icons = ['🎈', '🎉', '🎊', '❤️', '💖', '🌸', '✨', '🎈', '🍾', '💘', '🦋'];
-    
-    // 5 saniye boyunca her 50 milisaniyede bir nesne fırlat (Çok daha yoğun)
+function launchCelebration() {
+    const c = document.getElementById('celebrationContainer');
+    const icons = ['🎈', '🎉', '🎊', '❤️', '💖', '✨', '🦋', '💐'];
+    let end = Date.now() + 6000;
     let timer = setInterval(() => {
+        if (Date.now() > end) { clearInterval(timer); return; }
         const div = document.createElement('div');
-        div.className = 'celebrate-obj';
+        div.className = 'obj-celebrate';
         div.innerText = icons[Math.floor(Math.random() * icons.length)];
         div.style.left = Math.random() * 100 + "vw";
-        div.style.fontSize = (Math.random() * 40 + 20) + "px";
         div.style.animationDuration = (Math.random() * 2 + 2) + "s";
         c.appendChild(div);
         setTimeout(() => div.remove(), 5000);
-    }, 50);
-
-    setTimeout(() => clearInterval(timer), 6000);
+    }, 60);
 }
