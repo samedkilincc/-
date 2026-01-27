@@ -6,11 +6,8 @@ function check() {
         document.getElementById('login').style.display = 'none';
         document.getElementById('content').classList.remove('hidden');
         
-        // Müzik kontrolü
         const music = document.getElementById('music');
-        music.play().catch(error => {
-            console.log("Tarayıcı otomatik müziği engelledi, etkileşim gerekiyor.");
-        });
+        music.play().catch(e => console.log("Etkileşim gerekiyor."));
     } else {
         document.getElementById('wrong').innerText = "Hiç anlamadın ki beni, hiç dediklerim seni alakadar etmedi ki bak şifreyi bile yanlış giriyorsun. Pek söze gerek yok.";
     }
